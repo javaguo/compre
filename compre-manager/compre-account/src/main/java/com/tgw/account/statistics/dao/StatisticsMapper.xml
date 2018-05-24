@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tgw.account.statistics.dao.StatisticsMapper">
+
+  <select id="searchData" parameterType="com.tgw.account.statistics.model.Statistics"  resultType="map">
+    	SELECT
+	'' startTime
+	,'' endTime
+	,'累计收入(元)' title1
+	,(
+		select ROUND( SUM( r1.rec_sum )  , 2 )
+		from receipts r1
+	  <where>
+		  <if test="fkUserId!=null">
+			  and r1.fk_user_id = #{fkUserId}
+		  </if>
+	  </where>
+	) value1
+	,'累计支出(元)' title2
+	,(
+		SELECT ROUND( SUM( e1.exp_sum ) ,2)
+		from expend e1
+	  <where>
+		  <if test="fkUserId!=null">
+			  and e1.fk_user_id = #{fkUserId}
+		  </if>
+	  </where>
+	)  value2
+	,'差额' title2A
+	,''  value2A
+	,'累计收入(笔)' title3
+	,(
+		select count(0)
+		from receipts r1
+	  <where>
+		  <if test="fkUserId!=null">
+			  and r1.fk_user_id = #{fkUserId}
+		  </if>
+	  </where>
+	) value3
+	,'累计支出(笔)' title4
+	,(
+		select count(0)
+		from expend e1
+	  <where>
+		  <if test="fkUserId!=null">
+			  and e1.fk_user_id = #{fkUserId}
+		  </if>
+	  </where>
+	) value4
+	from dual
+	UNION all
+	  SELECT
+	  '' startTime
+	  ,'' endTime
+	  ,'收入总额(元)' title1
+	  ,(
+	  select ROUND( SUM( r1.rec_sum )  , 2 )
+	  from receipts r1
+	  <where>
+		  <if test="fkUserId!=null">
+			  and r1.fk_user_id = #{fkUserId}
+		  </if>
+		  <if test="statiDate1Start!=null">
+			  and r1.rec_date &gt;= #{statiDate1Start}
+		  </if>
+		  <if test="statiDate1End!=null">
+			  and r1.rec_date &lt;= #{statiDate1End}
+		  </if>
+	  </where>
+	  ) value1
+	  ,'支出总额(元)' title2
+	  ,(
+	  SELECT ROUND( SUM( e1.exp_sum ) ,2)
+	  from expend e1
+	  <where>
+		  <if test="fkUserId!=null">
+			  and e1.fk_user_id = #{fkUserId}
+		  </if>
+		  <if test="statiDate1Start!=null">
+			  and e1.exp_date &gt;= #{statiDate1Start}
+		  </if>
+		  <if test="statiDate1End!=null">
+			  and e1.exp_date &lt;= #{statiDate1End}
+		  </if>
+	  </where>
+	  )  value2
+	  ,'差额' title2A
+	  ,''  value2A
+	  ,'收入(笔)' title3
+	  ,(
+	  select count(0)
+	  from receipts r1
+	  <where>
+		  <if test="fkUserId!=null">
+			  and r1.fk_user_id = #{fkUserId}
+		  </if>
+		  <if test="statiDate1Start!=null">
+			  and r1.rec_date &gt;= #{statiDate1Start}
+		  </if>
+		  <if test="statiDate1End!=null">
+			  and r1.rec_date &lt;= #{statiDate1End}
+		  </if>
+	  </where>
+	  ) value3
+	  ,'支出(笔)' title4
+	  ,(
+	  select count(0)
+	  from expend e1
+	  <where>
+		  <if test="fkUserId!=null">
+			  and e1.fk_user_id = #{fkUserId}
+		  </if>
+		  <if test="statiDate1Start!=null">
+			  and e1.exp_date &gt;= #{statiDate1Start}
+		  </if>
+		  <if test="statiDate1End!=null">
+			  and e1.exp_date &lt;= #{statiDate1End}
+		  </if>
+	  </where>
+	  ) value4
+	  from dual
+	  UNION all
+	  SELECT
+	  '' startTime
+	  ,'' endTime
+	  ,'收入总额(元)' title1
+	  ,(
+	  select ROUND( SUM( r1.rec_sum )  , 2 )
+	  from receipts r1
+	  <where>
+		  <if test="fkUserId!=null">
+			  and r1.fk_user_id = #{fkUserId}
+		  </if>
+		  <if test="statiDate2Start!=null">
+			  and r1.rec_date &gt;= #{statiDate2Start}
+		  </if>
+		  <if test="statiDate2End!=null">
+			  and r1.rec_date &lt;= #{statiDate2End}
+		  </if>
+	  </where>
+	  ) value1
+	  ,'支出总额(元)' title2
+	   ,(
+	  SELECT ROUND( SUM( e1.exp_sum ) ,2)
+	  from expend e1
+	  <where>
+		  <if test="fkUserId!=null">
+			  and e1.fk_user_id = #{fkUserId}
+		  </if>
+		  <if test="statiDate2Start!=null">
+			  and e1.exp_date &gt;= #{statiDate2Start}
+		  </if>
+		  <if test="statiDate2End!=null">
+			  and e1.exp_date &lt;= #{statiDate2End}
+		  </if>
+	  </where>
+	  )  value2
+	  ,'差额' title2A
+	  ,''  value2A
+	  ,'收入(笔)' title3
+	  ,(
+	  select count(0)
+	  from receipts r1
+	  <where>
+		  <if test="fkUserId!=null">
+			  and r1.fk_user_id = #{fkUserId}
+		  </if>
+		  <if test="statiDate2Start!=null">
+			  and r1.rec_date &gt;= #{statiDate2Start}
+		  </if>
+		  <if test="statiDate2End!=null">
+			  and r1.rec_date &lt;= #{statiDate2End}
+		  </if>
+	  </where>
+	  ) value3
+	  ,'支出(笔)' title4
+	  ,(
+	  select count(0)
+	  from expend e1
+	  <where>
+		  <if test="fkUserId!=null">
+			  and e1.fk_user_id = #{fkUserId}
+		  </if>
+		  <if test="statiDate2Start!=null">
+			  and e1.exp_date &gt;= #{statiDate2Start}
+		  </if>
+		  <if test="statiDate2End!=null">
+			  and e1.exp_date &lt;= #{statiDate2End}
+		  </if>
+	  </where>
+	  ) value4
+	  from dual
+	UNION all
+	SELECT
+	'' startTime
+	,'' endTime
+	,'累计借入(元)' title1
+	,(
+		SELECT ROUND( sum(l.lend_sum) ,2)
+		from lend l
+	  <where>
+		  and l.lend_or_borrow = 0
+		  <if test="fkUserId!=null">
+			  and l.fk_user_id = #{fkUserId}
+		  </if>
+	  </where>
+	) value1
+	,'累计借出(元)' title2
+	,(
+		SELECT ROUND( sum(l.lend_sum) ,2)
+		from lend l
+	  <where>
+		  and l.lend_or_borrow = 1
+		  <if test="fkUserId!=null">
+			  and l.fk_user_id = #{fkUserId}
+		  </if>
+	  </where>
+	) value2
+	  ,'差额' title2A
+	  ,''  value2A
+	,'累计借入(笔)' title3
+	,(
+		SELECT count(0)
+		from lend l
+	  <where>
+		  and l.lend_or_borrow = 0
+		  <if test="fkUserId!=null">
+			  and l.fk_user_id = #{fkUserId}
+		  </if>
+	  </where>
+	) value3
+	,'累计借出(笔)' title4
+	,(
+		SELECT count(0)
+		from lend l
+	  <where>
+		  and l.lend_or_borrow = 1
+		  <if test="fkUserId!=null">
+			  and l.fk_user_id = #{fkUserId}
+		  </if>
+	  </where>
+	) value4
+	from dual
+	  UNION all
+	  SELECT
+	  '' startTime
+	  ,'' endTime
+	  ,'借入总额(元)' title1
+	  ,(
+	  SELECT ROUND( sum(l.lend_sum) ,2)
+	  from lend l
+	  <where>
+		  and l.lend_or_borrow = 0
+		  <if test="fkUserId!=null">
+			  and l.fk_user_id = #{fkUserId}
+		  </if>
+		  <if test="statiDate3Start!=null">
+			  and l.lend_date &gt;= #{statiDate3Start}
+		  </if>
+		  <if test="statiDate3End!=null">
+			  and l.lend_date &lt;= #{statiDate3End}
+		  </if>
+	  </where>
+	  ) value1
+	  ,'借出总额(元)' title2
+	  ,(
+	  SELECT ROUND( sum(l.lend_sum) ,2)
+	  from lend l
+	  <where>
+		  and l.lend_or_borrow = 1
+		  <if test="fkUserId!=null">
+			  and l.fk_user_id = #{fkUserId}
+		  </if>
+		  <if test="statiDate3Start!=null">
+			  and l.lend_date &gt;= #{statiDate3Start}
+		  </if>
+		  <if test="statiDate3End!=null">
+			  and l.lend_date &lt;= #{statiDate3End}
+		  </if>
+	  </where>
+	  ) value2
+	  ,'差额' title2A
+	  ,''  value2A
+	  ,'借入(笔)' title3
+	  ,(
+	  SELECT count(0)
+	  from lend l
+	  <where>
+		  and l.lend_or_borrow = 0
+		  <if test="fkUserId!=null">
+			  and l.fk_user_id = #{fkUserId}
+		  </if>
+		  <if test="statiDate3Start!=null">
+			  and l.lend_date &gt;= #{statiDate3Start}
+		  </if>
+		  <if test="statiDate3End!=null">
+			  and l.lend_date &lt;= #{statiDate3End}
+		  </if>
+	  </where>
+	  ) value3
+	  ,'借出(笔)' title4
+	  ,(
+	  SELECT count(0)
+	  from lend l
+	  <where>
+		  and l.lend_or_borrow = 1
+		  <if test="fkUserId!=null">
+			  and l.fk_user_id = #{fkUserId}
+		  </if>
+		  <if test="statiDate3Start!=null">
+			  and l.lend_date &gt;= #{statiDate3Start}
+		  </if>
+		  <if test="statiDate3End!=null">
+			  and l.lend_date &lt;= #{statiDate3End}
+		  </if>
+	  </where>
+	  ) value4
+	  from dual
+	union all
+	SELECT
+	'' startTime
+	,'' endTime
+	,'借入未还清(元)' title1
+	,(
+		SELECT ROUND( sum(l.lend_sum-l.has_refunded_data) ,2)
+		from lend l
+	  <where>
+		  and l.lend_or_borrow = 0
+		  and l.has_refunded = 0
+		  <if test="fkUserId!=null">
+			  and l.fk_user_id = #{fkUserId}
+		  </if>
+	  </where>
+	) value1
+	,'借出未还清(元)' title2
+	,(
+		SELECT ROUND( sum(l.lend_sum-l.has_refunded_data) ,2)
+		from lend l
+	  <where>
+		  and l.lend_or_borrow = 1
+		  and l.has_refunded = 0
+		  <if test="fkUserId!=null">
+			  and l.fk_user_id = #{fkUserId}
+		  </if>
+	  </where>
+	) value2
+	  ,'差额' title2A
+	  ,''  value2A
+	,'借入未还清(笔)' title3
+	,(
+		SELECT count(0)
+		from lend l
+	  <where>
+		  and l.lend_or_borrow = 0
+		  and l.has_refunded = 0
+		  <if test="fkUserId!=null">
+			  and l.fk_user_id = #{fkUserId}
+		  </if>
+	  </where>
+	) value3
+	,'借出未还清(笔)' title4
+	,(
+		SELECT count(0)
+		from lend l
+	  <where>
+		  and l.lend_or_borrow = 1
+		  and l.has_refunded = 0
+		  <if test="fkUserId!=null">
+			  and l.fk_user_id = #{fkUserId}
+		  </if>
+	  </where>
+	) value4
+	from dual
+  </select>
+</mapper>

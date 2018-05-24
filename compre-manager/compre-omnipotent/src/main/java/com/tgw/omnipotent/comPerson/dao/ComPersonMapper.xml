@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tgw.omnipotent.comPerson.dao.ComPersonMapper">
+  <resultMap id="BaseResultMap" type="com.tgw.omnipotent.comPerson.model.ComPerson">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="birthday" jdbcType="TIMESTAMP" property="birthday" />
+    <result column="birthday_lunar" jdbcType="TIMESTAMP" property="birthdayLunar" />
+    <result column="identity_card" jdbcType="VARCHAR" property="identityCard" />
+    <result column="profession" jdbcType="VARCHAR" property="profession" />
+    <result column="speciality" jdbcType="VARCHAR" property="speciality" />
+    <result column="mobile_phone1" jdbcType="VARCHAR" property="mobilePhone1" />
+    <result column="mobile_phone2" jdbcType="VARCHAR" property="mobilePhone2" />
+    <result column="mobile_phone3" jdbcType="VARCHAR" property="mobilePhone3" />
+    <result column="place_of_domicile" jdbcType="VARCHAR" property="placeOfDomicile" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="address_work" jdbcType="VARCHAR" property="addressWork" />
+    <result column="last_graduate_school" jdbcType="VARCHAR" property="lastGraduateSchool" />
+    <result column="last_graduate_date" jdbcType="TIMESTAMP" property="lastGraduateDate" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="fk_user_id" jdbcType="INTEGER" property="fkUserId" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <select id="searchData" parameterType="com.tgw.omnipotent.comPerson.model.ComPerson"  resultType="map">
+    <bind name="userNameCon" value="'%' + _parameter.getUserName() + '%'" />
+    <bind name="nameCon" value="'%' + _parameter.getName() + '%'" />
+    <bind name="identityCardCon" value="'%' + _parameter.getIdentityCard() + '%'" />
+
+    SELECT cp.id
+    ,cp.name
+    ,case when cp.sex='0' then '男' when cp.sex='1' then '女' else '未知' end sex
+    ,date_format(cp.birthday, '%Y-%m-%d') birthday
+    ,date_format(cp.birthday_lunar, '%Y-%m-%d') birthdayLunar
+    ,cp.identity_card identityCard,cp.profession,cp.speciality
+    ,cp.mobile_phone1 mobilePhone1,cp.mobile_phone2 mobilePhone2,cp.mobile_phone3 mobilePhone3
+    ,cp.place_of_domicile placeOfDomicile,cp.address,cp.address_work addressWork
+    ,cp.last_graduate_school lastGraduateSchool
+    ,date_format(cp.last_graduate_date, '%Y-%m-%d') lastGraduateDate
+    ,cp.remark
+    ,u.user_name userName
+    ,u.login_name loginName
+    ,date_format(cp.add_time, '%Y-%m-%d %H:%i:%s') addTime
+    ,date_format(cp.update_time, '%Y-%m-%d %H:%i:%s') updateTime
+    from com_person cp
+    LEFT JOIN sys_en_user u on cp.fk_user_id = u.id
+    <where>
+      <if test="name!=null and name!='' ">
+        and cp.name like #{nameCon}
+      </if>
+      <if test="sex!=null and sex!='' ">
+        and cp.sex = #{sex}
+      </if>
+      <if test="identityCard!=null and identityCard!='' ">
+        and cp.identity_card like #{identityCardCon}
+      </if>
+      <if test="birthdayStart!=null">
+        and cp.birthday &gt;= #{birthdayStart}
+      </if>
+      <if test="birthdayEnd!=null">
+        and cp.birthday &lt;= #{birthdayEnd}
+      </if>
+      <if test="birthdayLunarStart!=null">
+        and cp.birthday_lunar &gt;= #{birthdayLunarStart}
+      </if>
+      <if test="birthdayLunarEnd!=null">
+        and cp.birthday_lunar &lt;= #{birthdayLunarEnd}
+      </if>
+      <if test="userName!=null and userName!='' ">
+        and u.user_name like #{userNameCon}
+      </if>
+      <if test="loginName!=null and loginName!='' ">
+        and u.login_name = #{loginName}
+      </if>
+      <if test="fkUserId!=null">
+        and cp.fk_user_id = #{fkUserId}
+      </if>
+    </where>
+    order by CONVERT( cp.name USING gbk)  asc
+  </select>
+
+  <select id="loadComPersonComboBoxMap"  resultType="map">
+    select
+    cp.id,cp.name
+    from com_person cp
+    <where>
+      and cp.fk_user_id = #{fkUserId}
+    </where>
+    order by CONVERT(cp.name USING gbk) asc
+  </select>
+</mapper>

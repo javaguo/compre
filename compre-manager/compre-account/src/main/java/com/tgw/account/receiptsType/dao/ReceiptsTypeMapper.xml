@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tgw.account.receiptsType.dao.ReceiptsTypeMapper">
+  <resultMap id="BaseResultMap" type="com.tgw.account.receiptsType.model.ReceiptsType">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="fk_parent_id" jdbcType="INTEGER" property="fkParentId" />
+    <result column="receipts_type_name" jdbcType="VARCHAR" property="receiptsTypeName" />
+    <result column="order_num" jdbcType="VARCHAR" property="orderNum" />
+    <result column="is_sys_own" jdbcType="INTEGER" property="isSysOwn" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <select id="searchData" parameterType="com.tgw.account.receiptsType.model.ReceiptsType"  resultType="map">
+    <bind name="userNameCon" value="'%' + _parameter.getUserName() + '%'" />
+    <bind name="receiptsTypeNameCon" value="'%' + _parameter.getReceiptsTypeName() + '%'" />
+
+    SELECT
+    receipt.id,
+    receipt_p.receipts_type_name fkParentId,
+    receipt.receipts_type_name receiptsTypeName,
+    receipt.is_sys_own isSysOwn,
+    receipt.order_num orderNum,
+    receipt.remark,
+    u.user_name userName,
+    u.login_name loginName,
+    date_format(receipt.add_time, '%Y-%m-%d %H:%i:%s') addTime,
+    date_format(receipt.update_time, '%Y-%m-%d %H:%i:%s') updateTime
+    from receipts_type receipt
+    left join receipts_type receipt_p on receipt.fk_parent_id = receipt_p.id
+    LEFT JOIN sys_en_user u on receipt.fk_user_id = u.id
+    <where>
+      <if test="receiptsTypeName!=null and receiptsTypeName!='' ">
+        and receipt.receipts_type_name like #{receiptsTypeNameCon}
+      </if>
+      <if test="fkParentId!=null">
+        and receipt.fk_parent_id = #{fkParentId}
+      </if>
+      <if test="userName!=null and userName!='' ">
+        and u.user_name like #{userNameCon}
+      </if>
+      <if test="loginName!=null and loginName!='' ">
+        and u.login_name = #{loginName}
+      </if>
+      <if test="fkUserId!=null">
+        and receipt.fk_user_id = #{fkUserId}
+      </if>
+    </where>
+    order by CONVERT( u.user_name USING gbk) asc,CONVERT( CONCAT_WS('',receipt_p.order_num,receipt.order_num) USING gbk) asc
+  </select>
+
+  <select id="queryReceiptsTypeMap"  resultType="map">
+        /*普通用户*/
+        select receipt.id,receipt.receipts_type_name,receipt.fk_parent_id
+        from receipts_type receipt
+        LEFT JOIN  receipts_type receipt_p on receipt.fk_parent_id = receipt_p.id
+        <where>
+          receipt.fk_user_id = #{fkUserId}
+        </where>
+        order by CONVERT( CONCAT_WS('',receipt_p.order_num,receipt.order_num) USING gbk) asc
+    <!--<choose>
+      <when test="fkUserId!=null">
+      </when>
+      <otherwise>
+        超级管理员用户
+        select receipt.id
+        ,CONCAT_WS("_",u.user_name,receipt.receipts_type_name) receipts_type_name
+        ,receipt.fk_parent_id
+        from receipts_type receipt
+        LEFT JOIN  receipts_type receipt_p on receipt.fk_parent_id = receipt_p.id
+        LEFT JOIN sys_en_user u on receipt.fk_user_id = u.id
+        order by CONVERT( u.user_name USING gbk ) asc,CONVERT( CONCAT_WS('',receipt_p.order_num,receipt.order_num) USING gbk) asc
+      </otherwise>
+    </choose>-->
+  </select>
+
+  <select id="queryChildRecord"  resultType="int">
+    SELECT count(0)
+    from receipts_type
+    where
+    fk_user_id = #{fkUserId}
+    and fk_parent_id in
+    <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </select>
+
+  <select id="queryReceiptsRecord"  resultType="int">
+    SELECT count(0)
+    from receipts r
+    where
+    r.fk_user_id = #{fkUserId}
+    and r.fk_receipts_type_id in
+    <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </select>
+</mapper>

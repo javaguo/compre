@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tgw.account.receiptsTypeSys.dao.ReceiptsTypeSysMapper">
+  <resultMap id="BaseResultMap" type="com.tgw.account.receiptsTypeSys.model.ReceiptsTypeSys">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="fk_parent_id" jdbcType="INTEGER" property="fkParentId" />
+    <result column="receipts_type_name" jdbcType="VARCHAR" property="receiptsTypeName" />
+    <result column="order_num" jdbcType="VARCHAR" property="orderNum" />
+    <result column="is_sys_own" jdbcType="INTEGER" property="isSysOwn" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <select id="searchData" parameterType="com.tgw.account.receiptsTypeSys.model.ReceiptsTypeSys"  resultType="map">
+    <bind name="receiptsTypeNameCon" value="'%' + _parameter.getReceiptsTypeName() + '%'" />
+
+    SELECT
+    receipt.id,
+    receipt_p.receipts_type_name fkParentId,
+    receipt.receipts_type_name receiptsTypeName,
+    receipt.is_sys_own isSysOwn,
+    receipt.order_num orderNum,
+    receipt.remark,
+    date_format(receipt.add_time, '%Y-%m-%d %H:%i:%s') addTime,
+    date_format(receipt.update_time, '%Y-%m-%d %H:%i:%s') updateTime
+    from receipts_type_sys receipt
+    left join receipts_type_sys receipt_p on receipt.fk_parent_id = receipt_p.id
+    <where>
+      <if test="receiptsTypeName!=null and receiptsTypeName!='' ">
+        and receipt.receipts_type_name like #{receiptsTypeNameCon}
+      </if>
+      <if test="fkParentId!=null">
+        and receipt.fk_parent_id = #{fkParentId}
+      </if>
+    </where>
+    order by CONVERT( CONCAT_WS('',receipt_p.order_num,receipt.order_num) USING gbk) asc
+  </select>
+
+  <select id="queryReceiptsTypeSysTreeMap"  resultType="map">
+    select receipt.id,receipt.receipts_type_name,receipt.fk_parent_id
+    from receipts_type_sys receipt
+    LEFT JOIN  receipts_type_sys receipt_p on receipt.fk_parent_id = receipt_p.id
+    order by CONVERT( CONCAT_WS('',receipt_p.order_num,receipt.order_num) USING gbk) asc
+  </select>
+
+  <select id="queryChildRecord"  resultType="int">
+    SELECT count(0)
+    from receipts_type_sys
+    where fk_parent_id in
+    <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </select>
+</mapper>

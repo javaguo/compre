@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tgw.account.receipts.dao.ReceiptsMapper">
+  <resultMap id="BaseResultMap" type="com.tgw.account.receipts.model.Receipts">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="rec_sum" jdbcType="DOUBLE" property="recSum" />
+    <result column="rec_date" jdbcType="TIMESTAMP" property="recDate" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="fk_receipts_type_id" jdbcType="INTEGER" property="fkReceiptsTypeId" />
+    <result column="fk_user_id" jdbcType="INTEGER" property="fkUserId" />
+    <result column="fk_com_event_id" jdbcType="INTEGER" property="fkComEventId" />
+    <result column="fk_com_person_id" jdbcType="INTEGER" property="fkComPersonId" />
+  </resultMap>
+
+  <select id="searchData" parameterType="com.tgw.account.receipts.model.Receipts"  resultType="map">
+    <bind name="userNameCon" value="'%' + _parameter.getUserName() + '%'" />
+
+    select r.id,
+    rt_p.receipts_type_name receiptsParentTypeName,
+    rt.receipts_type_name fkReceiptsTypeId,
+    r.rec_sum recSum,
+    date_format(r.rec_date, '%Y-%m-%d') recDate,
+    r.remark,
+    ce.title fkComEventId,
+    cp.name fkComPersonId,
+    u.user_name userName,
+    u.login_name loginName,
+    date_format(r.add_time, '%Y-%m-%d %H:%i:%s') addTime,
+    date_format(r.update_time, '%Y-%m-%d %H:%i:%s') updateTime
+    from receipts r
+    LEFT JOIN receipts_type rt on r.fk_receipts_type_id = rt.id
+    LEFT JOIN receipts_type rt_p on rt.fk_parent_id = rt_p.id
+    LEFT JOIN sys_en_user u on r.fk_user_id = u.id
+    left join com_event ce on r.fk_com_event_id = ce.id
+    left join com_person cp on r.fk_com_person_id = cp.id
+    <where>
+      <if test="fkReceiptsTypeId!=null">
+        and r.fk_receipts_type_id = #{fkReceiptsTypeId}
+      </if>
+      <if test="idList!=null">
+        and r.fk_receipts_type_id in
+        <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+      <if test="recSumStart!=null">
+        and r.rec_sum &gt;= #{recSumStart}
+      </if>
+      <if test="recSumEnd!=null">
+        and r.rec_sum &lt;= #{recSumEnd}
+      </if>
+      <if test="recDateStart!=null">
+        and r.rec_date &gt;= #{recDateStart}
+      </if>
+      <if test="recDateEnd!=null">
+        and r.rec_date &lt;= #{recDateEnd}
+      </if>
+      <if test="userName!=null and userName!='' ">
+        and u.user_name like #{userNameCon}
+      </if>
+      <if test="loginName!=null and loginName!='' ">
+        and u.login_name = #{loginName}
+      </if>
+      <if test="fkUserId!=null">
+        and r.fk_user_id = #{fkUserId}
+      </if>
+      <if test="fkComEventId!=null">
+        and r.fk_com_event_id = #{fkComEventId}
+      </if>
+      <if test="fkComPersonId!=null">
+        and r.fk_com_person_id = #{fkComPersonId}
+      </if>
+    </where>
+    order by r.rec_date desc
+  </select>
+</mapper>

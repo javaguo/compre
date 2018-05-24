@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tgw.account.refund.dao.RefundMapper">
+  <resultMap id="BaseResultMap" type="com.tgw.account.refund.model.Refund">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="refund_sum" jdbcType="DOUBLE" property="refundSum" />
+    <result column="refund_date" jdbcType="TIMESTAMP" property="refundDate" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="fk_lend_id" jdbcType="INTEGER" property="fkLendId" />
+  </resultMap>
+
+  <select id="searchData" parameterType="com.tgw.account.refund.model.Refund"  resultType="map">
+    <bind name="userNameCon" value="'%' + _parameter.getUserName() + '%'" />
+
+    select r.id,
+    date_format(r.refund_date, '%Y-%m-%d') refundDate,
+    r.refund_sum refundSum,
+    l.has_refunded_data hasRefundedData,
+    l.lend_sum lendSum,
+    case when l.has_refunded=1 then '已还清' when l.has_refunded=0 then '未还清' else '未知' end hasRefunded,
+    l.lend_person lendPerson,
+    case when l.lend_or_borrow=1 then '借出' when l.lend_or_borrow=0 then '借入' else '未知' end lendOrBorrow,
+    l.lend_purpose lendPurpose,
+    l.plan_refund_date planRefundDate,
+    l.remark,
+    u.user_name userName,
+    u.login_name loginName,
+    date_format(r.add_time, '%Y-%m-%d %H:%i:%s') addTime,
+    date_format(r.update_time, '%Y-%m-%d %H:%i:%s') updateTime
+    from refund r
+    LEFT JOIN lend l on r.fk_lend_id = l.id
+    left join sys_en_user u on l.fk_user_id = u.id
+    <where>
+      <if test="refundDateStart!=null">
+        and r.refund_date &gt;= #{refundDateStart}
+      </if>
+      <if test="refundDateEnd!=null">
+        and r.refund_date &lt;= #{refundDateEnd}
+      </if>
+      <if test="userName!=null and userName!='' ">
+        and u.user_name like #{userNameCon}
+      </if>
+      <if test="loginName!=null and loginName!='' ">
+        and u.login_name = #{loginName}
+      </if>
+      <if test="fkUserId!=null">
+        and l.fk_user_id = #{fkUserId}
+      </if>
+    </where>
+    order by r.refund_date desc
+  </select>
+</mapper>

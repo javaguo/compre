@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tgw.account.lend.dao.LendMapper">
+  <resultMap id="BaseResultMap" type="com.tgw.account.lend.model.Lend">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="lend_or_borrow" jdbcType="INTEGER" property="lendOrBorrow" />
+    <result column="lend_sum" jdbcType="DOUBLE" property="lendSum" />
+    <result column="has_refunded_data" jdbcType="DOUBLE" property="hasRefundedData" />
+    <result column="lend_person" jdbcType="VARCHAR" property="lendPerson" />
+    <result column="lend_purpose" jdbcType="VARCHAR" property="lendPurpose" />
+    <result column="lend_date" jdbcType="TIMESTAMP" property="lendDate" />
+    <result column="plan_refund_date" jdbcType="TIMESTAMP" property="planRefundDate" />
+    <result column="refund_date" jdbcType="TIMESTAMP" property="refundDate" />
+    <result column="has_refunded" jdbcType="INTEGER" property="hasRefunded" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="fk_user_id" jdbcType="INTEGER" property="fkUserId" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <select id="searchData" parameterType="com.tgw.account.lend.model.Lend"  resultType="map">
+    <bind name="lendPersonCon" value="'%' + _parameter.getLendPerson() + '%'" />
+    <bind name="userNameCon" value="'%' + _parameter.getUserName() + '%'" />
+
+    select l.id,
+    date_format(l.lend_date, '%Y-%m-%d') lendDate,
+    case when l.lend_or_borrow=1 then '借出' when l.lend_or_borrow=0 then '借入' else '未知' end lendOrBorrow,
+    l.lend_person lendPerson,
+    l.lend_sum lendSum,
+    l.lend_purpose lendPurpose,
+    date_format(l.plan_refund_date, '%Y-%m-%d') planRefundDate,
+    l.has_refunded_data hasRefundedData,
+    date_format(l.refund_date, '%Y-%m-%d') refundDate,
+    case when l.has_refunded=1 then '已还清' when l.has_refunded=0 then '未还清' else '未知' end hasRefunded,
+    l.remark,
+    u.user_name userName,
+    u.login_name loginName,
+    date_format(l.add_time, '%Y-%m-%d %H:%i:%s') addTime,
+    date_format(l.update_time, '%Y-%m-%d %H:%i:%s') updateTime
+    from lend l
+    left join sys_en_user u on l.fk_user_id = u.id
+    <where>
+      <if test="lendDateStart!=null">
+        and l.lend_date &gt;= #{lendDateStart}
+      </if>
+      <if test="lendDateEnd!=null">
+        and l.lend_date &lt;= #{lendDateEnd}
+      </if>
+      <if test="lendOrBorrow!=null">
+        and l.lend_or_borrow = #{lendOrBorrow}
+      </if>
+      <if test="lendPerson!=null and lendPerson!='' ">
+        and l.lend_person like #{lendPersonCon}
+      </if>
+      <if test="lendSumStart!=null">
+        and l.lend_sum &gt;= #{lendSumStart}
+      </if>
+      <if test="lendSumEnd!=null">
+        and l.lend_sum &lt;= #{lendSumEnd}
+      </if>
+      <if test="hasRefunded!=null">
+        and l.has_refunded = #{hasRefunded}
+      </if>
+      <if test="userName!=null and userName!='' ">
+        and u.user_name like #{userNameCon}
+      </if>
+      <if test="loginName!=null and loginName!='' ">
+        and u.login_name = #{loginName}
+      </if>
+      <if test="fkUserId!=null">
+        and l.fk_user_id = #{fkUserId}
+      </if>
+    </where>
+    order by l.lend_date desc
+  </select>
+</mapper>

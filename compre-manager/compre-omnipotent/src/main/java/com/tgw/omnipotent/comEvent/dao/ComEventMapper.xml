@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tgw.omnipotent.comEvent.dao.ComEventMapper">
+  <resultMap id="BaseResultMap" type="com.tgw.omnipotent.comEvent.model.ComEvent">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="fk_user_id" jdbcType="INTEGER" property="fkUserId" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <select id="searchData" parameterType="com.tgw.omnipotent.comEvent.model.ComEvent"  resultType="map">
+    <bind name="userNameCon" value="'%' + _parameter.getUserName() + '%'" />
+    <bind name="titleCon" value="'%' + _parameter.getTitle() + '%'" />
+
+    SELECT ce.id,ce.title,ce.description
+    ,date_format(ce.start_time, '%Y-%m-%d') startTime
+    ,date_format(ce.end_time, '%Y-%m-%d') endTime
+    ,ce.remark
+    ,u.user_name userName
+    ,u.login_name loginName
+    ,date_format(ce.add_time, '%Y-%m-%d %H:%i:%s') addTime
+    ,date_format(ce.update_time, '%Y-%m-%d %H:%i:%s') updateTime
+    FROM com_event ce
+    LEFT JOIN sys_en_user u on ce.fk_user_id = u.id
+    <where>
+      <if test="title!=null and title!='' ">
+        and ce.title like #{titleCon}
+      </if>
+      <if test="startTimeStart!=null">
+        and ce.start_time &gt;= #{startTimeStart}
+      </if>
+      <if test="startTimeEnd!=null">
+        and ce.start_time &lt;= #{startTimeEnd}
+      </if>
+      <if test="endTimeStart!=null">
+        and ce.end_time &gt;= #{endTimeStart}
+      </if>
+      <if test="endTimeEnd!=null">
+        and ce.end_time &lt;= #{endTimeEnd}
+      </if>
+      <if test="userName!=null and userName!='' ">
+        and u.user_name like #{userNameCon}
+      </if>
+      <if test="loginName!=null and loginName!='' ">
+        and u.login_name = #{loginName}
+      </if>
+      <if test="fkUserId!=null">
+        and ce.fk_user_id = #{fkUserId}
+      </if>
+    </where>
+    order by ce.start_time desc,ce.end_time desc
+  </select>
+
+  <select id="loadComEventComboBoxMap"  resultType="map">
+    SELECT
+    cev.id,cev.title name
+    from com_event cev
+    <where>
+      and cev.start_time &gt;= #{minDate}
+      and cev.fk_user_id = #{fkUserId}
+    </where>
+    order by cev.start_time desc
+  </select>
+</mapper>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tgw.account.expend.dao.ExpendMapper">
+  <resultMap id="BaseResultMap" type="com.tgw.account.expend.model.Expend">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="exp_sum" jdbcType="DOUBLE" property="expSum" />
+    <result column="exp_date" jdbcType="TIMESTAMP" property="expDate" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="fk_expend_type_id" jdbcType="INTEGER" property="fkExpendTypeId" />
+    <result column="fk_user_id" jdbcType="INTEGER" property="fkUserId" />
+    <result column="fk_com_event_id" jdbcType="INTEGER" property="fkComEventId" />
+    <result column="fk_com_person_id" jdbcType="INTEGER" property="fkComPersonId" />
+  </resultMap>
+
+  <select id="searchData" parameterType="com.tgw.account.expend.model.Expend"  resultType="map">
+    <bind name="userNameCon" value="'%' + _parameter.getUserName() + '%'" />
+
+    SELECT e.id,
+    et_p.expend_type_name expendParentTypeName,
+    et.expend_type_name fkExpendTypeId,
+    e.exp_sum expSum,
+    date_format(e.exp_date, '%Y-%m-%d') expDate,
+    e.remark remark,
+    ce.title fkComEventId,
+    cp.name fkComPersonId,
+    u.user_name userName,
+    u.login_name loginName,
+    date_format(e.add_time, '%Y-%m-%d %H:%i:%s') addTime,
+    date_format(e.update_time, '%Y-%m-%d %H:%i:%s') updateTime
+    from expend e
+    LEFT JOIN expend_type et on e.fk_expend_type_id = et.id
+    LEFT JOIN expend_type et_p on et.fk_parent_id = et_p.id
+    LEFT JOIN sys_en_user u on e.fk_user_id = u.id
+    left join com_event ce on e.fk_com_event_id = ce.id
+    left join com_person cp on e.fk_com_person_id = cp.id
+    <where>
+      <if test="fkExpendTypeId!=null">
+        and e.fk_expend_type_id = #{fkExpendTypeId}
+      </if>
+      <if test="idList!=null">
+        and e.fk_expend_type_id in
+        <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+      <if test="expSumStart!=null">
+        and e.exp_sum &gt;= #{expSumStart}
+      </if>
+      <if test="expSumEnd!=null">
+        and e.exp_sum &lt;= #{expSumEnd}
+      </if>
+      <if test="expDateStart!=null">
+        and e.exp_date &gt;= #{expDateStart}
+      </if>
+      <if test="expDateEnd!=null">
+        and e.exp_date &lt;= #{expDateEnd}
+      </if>
+      <if test="userName!=null and userName!='' ">
+        and u.user_name like #{userNameCon}
+      </if>
+      <if test="loginName!=null and loginName!='' ">
+        and u.login_name = #{loginName}
+      </if>
+      <if test="fkUserId!=null">
+        and e.fk_user_id = #{fkUserId}
+      </if>
+      <if test="fkComEventId!=null">
+        and e.fk_com_event_id = #{fkComEventId}
+      </if>
+      <if test="fkComPersonId!=null">
+        and e.fk_com_person_id = #{fkComPersonId}
+      </if>
+    </where>
+    order by e.exp_date desc
+  </select>
+</mapper>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tgw.account.expendType.dao.ExpendTypeMapper">
+  <resultMap id="expendTypeResultMap" type="com.tgw.account.expendType.model.ExpendType">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="fk_parent_id" jdbcType="INTEGER" property="fkParentId" />
+    <result column="expend_type_name" jdbcType="VARCHAR" property="expendTypeName" />
+    <result column="is_sys_own" jdbcType="INTEGER" property="isSysOwn" />
+    <result column="order_num" jdbcType="VARCHAR" property="orderNum" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <select id="searchData" parameterType="com.tgw.account.expendType.model.ExpendType"  resultType="map">
+    <bind name="userNameCon" value="'%' + _parameter.getUserName() + '%'" />
+    <bind name="expendTypeNameCon" value="'%' + _parameter.getExpendTypeName() + '%'" />
+
+    select expend.id,
+    expend_p.expend_type_name fkParentId,
+    expend.expend_type_name expendTypeName,
+    expend.is_sys_own isSysOwn,
+    expend.order_num orderNum,
+    expend.remark remark,
+    u.user_name userName,
+    u.login_name loginName,
+    date_format(expend.add_time, '%Y-%m-%d %H:%i:%s') addTime,
+    date_format(expend.update_time, '%Y-%m-%d %H:%i:%s') updateTime
+    from expend_type expend
+    LEFT JOIN  expend_type expend_p on expend.fk_parent_id = expend_p.id
+    LEFT JOIN sys_en_user u on expend.fk_user_id = u.id
+    <where>
+      <if test="expendTypeName!=null and expendTypeName!='' ">
+        and expend.expend_type_name like #{expendTypeNameCon}
+      </if>
+      <if test="fkParentId!=null">
+        and expend.fk_parent_id = #{fkParentId}
+      </if>
+      <if test="userName!=null and userName!='' ">
+        and u.user_name like #{userNameCon}
+      </if>
+      <if test="loginName!=null and loginName!='' ">
+        and u.login_name = #{loginName}
+      </if>
+      <if test="fkUserId!=null">
+        and expend.fk_user_id = #{fkUserId}
+      </if>
+    </where>
+    order by CONVERT( u.user_name USING gbk) asc,CONVERT( CONCAT_WS('',expend_p.order_num,expend.order_num) USING gbk) asc
+  </select>
+
+  <select id="queryExpendTypeTreeMap"  resultType="map">
+    select tree.id,tree.expend_type_name,tree.fk_parent_id
+    from expend_type tree
+    LEFT JOIN  expend_type expend_p on tree.fk_parent_id = expend_p.id
+    <where>
+        tree.fk_user_id = #{fkUserId}
+    </where>
+    order by CONVERT( CONCAT_WS('',expend_p.order_num,tree.order_num) USING gbk) asc
+  </select>
+
+  <select id="queryChildRecord"  resultType="int">
+    SELECT count(0)
+    from expend_type
+    where
+    fk_user_id = #{fkUserId}
+    and fk_parent_id in
+    <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </select>
+
+  <select id="queryExpendRecord"  resultType="int">
+    SELECT count(0)
+    from expend e
+    where
+    e.fk_user_id = #{fkUserId}
+    and e.fk_expend_type_id in
+    <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </select>
+
+</mapper>

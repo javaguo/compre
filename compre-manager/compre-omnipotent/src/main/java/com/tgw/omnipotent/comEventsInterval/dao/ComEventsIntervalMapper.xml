@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tgw.omnipotent.comEventsInterval.dao.ComEventsIntervalMapper">
+  <resultMap id="BaseResultMap" type="com.tgw.omnipotent.comEventsInterval.model.ComEventsInterval">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="fk_constant_id" jdbcType="INTEGER" property="fkConstantId" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="fk_user_id" jdbcType="INTEGER" property="fkUserId" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <select id="searchData" parameterType="com.tgw.omnipotent.comEventsInterval.model.ComEventsInterval"  resultType="map">
+    <bind name="userNameCon" value="'%' + _parameter.getUserName() + '%'" />
+
+    SELECT
+    cei.id
+    ,en_type.name fkConstantId
+    ,en_type.id constantId
+    ,date_format(cei.start_time, '%Y-%m-%d') startTime
+    ,date_format(cei.end_time, '%Y-%m-%d') endTime
+    ,cei.remark
+    ,u.user_name userName
+    ,u.login_name loginName
+    ,date_format(cei.add_time, '%Y-%m-%d %H:%i:%s') addTime
+    ,date_format(cei.update_time, '%Y-%m-%d %H:%i:%s') updateTime
+    FROM com_events_interval cei
+    LEFT JOIN sys_en_user u on cei.fk_user_id = u.id
+    left JOIN com_code_events_interval_type en_type on cei.fk_constant_id = en_type.id
+    <where>
+      <if test="fkConstantId!=null ">
+        and cei.fk_constant_id = #{fkConstantId}
+      </if>
+      <if test="startTimeStart!=null">
+        and cei.start_time &gt;= #{startTimeStart}
+      </if>
+      <if test="startTimeEnd!=null">
+        and cei.start_time &lt;= #{startTimeEnd}
+      </if>
+      <if test="endTimeStart!=null">
+        and cei.end_time &gt;= #{endTimeStart}
+      </if>
+      <if test="endTimeEnd!=null">
+        and cei.end_time &lt;= #{endTimeEnd}
+      </if>
+      <if test="userName!=null and userName!='' ">
+        and u.user_name like #{userNameCon}
+      </if>
+      <if test="loginName!=null and loginName!='' ">
+        and u.login_name = #{loginName}
+      </if>
+      <if test="fkUserId!=null">
+        and cei.fk_user_id = #{fkUserId}
+      </if>
+    </where>
+    order by convert( en_type.name USING  GBK) asc,cei.start_time asc,cei.end_time asc
+  </select>
+
+  <select id="loadEventIntervalComboBoxMap"  resultType="map">
+    SELECT en_type.id,en_type.name
+    from com_code_events_interval_type en_type
+    where en_type.fk_user_id = #{fkUserId}
+    and en_type.is_valid = '1'
+    order by CONVERT(en_type.name  USING gbk) asc
+  </select>
+</mapper>
