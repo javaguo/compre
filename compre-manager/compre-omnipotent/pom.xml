@@ -26,7 +26,7 @@
         </dependency>
         <dependency>
             <groupId>com.tgw.basic</groupId>
-            <artifactId>basic-systemUser-service</artifactId>
+            <artifactId>basic-system-user-service</artifactId>
             <version>${basic-version}</version>
         </dependency>
 

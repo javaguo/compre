@@ -26,17 +26,17 @@
         </dependency>
         <dependency>
             <groupId>com.tgw.basic</groupId>
-            <artifactId>basic-constant-web</artifactId>
+            <artifactId>basic-system-constant-web</artifactId>
             <version>${basic-version}</version>
         </dependency>
         <dependency>
             <groupId>com.tgw.basic</groupId>
-            <artifactId>basic-systemConf-web</artifactId>
+            <artifactId>basic-system-config-web</artifactId>
             <version>${basic-version}</version>
         </dependency>
         <dependency>
             <groupId>com.tgw.basic</groupId>
-            <artifactId>basic-systemUser-web</artifactId>
+            <artifactId>basic-system-user-web</artifactId>
             <version>${basic-version}</version>
         </dependency>
         <dependency>

@@ -22,34 +22,34 @@
         </dependency>
         <dependency>
             <groupId>com.tgw.basic</groupId>
-            <artifactId>basic-constant-web</artifactId>
+            <artifactId>basic-system-constant-web</artifactId>
             <version>${basic-version}</version>
         </dependency>
         <dependency>
             <groupId>com.tgw.basic</groupId>
-            <artifactId>basic-systemConf-web</artifactId>
+            <artifactId>basic-system-config-web</artifactId>
             <version>${basic-version}</version>
         </dependency>
         <dependency>
             <groupId>com.tgw.basic</groupId>
-            <artifactId>basic-systemMenu-web</artifactId>
+            <artifactId>basic-system-menu-web</artifactId>
             <version>${basic-version}</version>
         </dependency>
         <dependency>
             <groupId>com.tgw.basic</groupId>
-            <artifactId>basic-systemFunc-web</artifactId>
-            <version>${basic-version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.tgw.basic</groupId>
-            <artifactId>basic-systemRole-web</artifactId>
+            <artifactId>basic-system-function-web</artifactId>
             <version>${basic-version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.tgw.basic</groupId>
-            <artifactId>basic-systemUser-web</artifactId>
+            <artifactId>basic-system-role-web</artifactId>
+            <version>${basic-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tgw.basic</groupId>
+            <artifactId>basic-system-user-web</artifactId>
             <version>${basic-version}</version>
         </dependency>
 
