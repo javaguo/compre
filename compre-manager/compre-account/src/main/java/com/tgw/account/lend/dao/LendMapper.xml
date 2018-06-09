@@ -40,7 +40,7 @@
     u.login_name loginName,
     date_format(l.add_time, '%Y-%m-%d %H:%i:%s') addTime,
     date_format(l.update_time, '%Y-%m-%d %H:%i:%s') updateTime
-    from lend l
+    from account_lend l
     left join sys_en_user u on l.fk_user_id = u.id
     <where>
       <if test="lendDateStart!=null">

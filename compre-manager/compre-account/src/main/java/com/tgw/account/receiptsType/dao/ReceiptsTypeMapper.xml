@@ -8,7 +8,7 @@
     <result column="id" jdbcType="INTEGER" property="id" />
     <result column="fk_parent_id" jdbcType="INTEGER" property="fkParentId" />
     <result column="receipts_type_name" jdbcType="VARCHAR" property="receiptsTypeName" />
-    <result column="order_num" jdbcType="VARCHAR" property="orderNum" />
+    <result column="order_num" jdbcType="INTEGER" property="orderNum" />
     <result column="is_sys_own" jdbcType="INTEGER" property="isSysOwn" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
@@ -30,8 +30,8 @@
     u.login_name loginName,
     date_format(receipt.add_time, '%Y-%m-%d %H:%i:%s') addTime,
     date_format(receipt.update_time, '%Y-%m-%d %H:%i:%s') updateTime
-    from receipts_type receipt
-    left join receipts_type receipt_p on receipt.fk_parent_id = receipt_p.id
+    from account_receipts_type receipt
+    left join account_receipts_type receipt_p on receipt.fk_parent_id = receipt_p.id
     LEFT JOIN sys_en_user u on receipt.fk_user_id = u.id
     <where>
       <if test="receiptsTypeName!=null and receiptsTypeName!='' ">
@@ -50,18 +50,18 @@
         and receipt.fk_user_id = #{fkUserId}
       </if>
     </where>
-    order by CONVERT( u.user_name USING gbk) asc,CONVERT( CONCAT_WS('',receipt_p.order_num,receipt.order_num) USING gbk) asc
+    order by CONVERT( u.user_name USING gbk) asc,CONVERT( CONCAT_WS('',LPAD(receipt_p.order_num,8,'0'),LPAD(receipt.order_num,8,'0')) USING gbk) asc
   </select>
 
   <select id="queryReceiptsTypeMap"  resultType="map">
         /*普通用户*/
         select receipt.id,receipt.receipts_type_name,receipt.fk_parent_id
-        from receipts_type receipt
-        LEFT JOIN  receipts_type receipt_p on receipt.fk_parent_id = receipt_p.id
+        from account_receipts_type receipt
+        LEFT JOIN  account_receipts_type receipt_p on receipt.fk_parent_id = receipt_p.id
         <where>
           receipt.fk_user_id = #{fkUserId}
         </where>
-        order by CONVERT( CONCAT_WS('',receipt_p.order_num,receipt.order_num) USING gbk) asc
+        order by CONVERT( CONCAT_WS('',LPAD(receipt_p.order_num,8,'0'),LPAD(receipt.order_num,8,'0')) USING gbk) asc
     <!--<choose>
       <when test="fkUserId!=null">
       </when>
@@ -70,8 +70,8 @@
         select receipt.id
         ,CONCAT_WS("_",u.user_name,receipt.receipts_type_name) receipts_type_name
         ,receipt.fk_parent_id
-        from receipts_type receipt
-        LEFT JOIN  receipts_type receipt_p on receipt.fk_parent_id = receipt_p.id
+        from account_receipts_type receipt
+        LEFT JOIN  account_receipts_type receipt_p on receipt.fk_parent_id = receipt_p.id
         LEFT JOIN sys_en_user u on receipt.fk_user_id = u.id
         order by CONVERT( u.user_name USING gbk ) asc,CONVERT( CONCAT_WS('',receipt_p.order_num,receipt.order_num) USING gbk) asc
       </otherwise>
@@ -80,7 +80,7 @@
 
   <select id="queryChildRecord"  resultType="int">
     SELECT count(0)
-    from receipts_type
+    from account_receipts_type
     where
     fk_user_id = #{fkUserId}
     and fk_parent_id in
@@ -91,7 +91,7 @@
 
   <select id="queryReceiptsRecord"  resultType="int">
     SELECT count(0)
-    from receipts r
+    from account_receipts r
     where
     r.fk_user_id = #{fkUserId}
     and r.fk_receipts_type_id in

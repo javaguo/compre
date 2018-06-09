@@ -32,9 +32,9 @@
     u.login_name loginName,
     date_format(e.add_time, '%Y-%m-%d %H:%i:%s') addTime,
     date_format(e.update_time, '%Y-%m-%d %H:%i:%s') updateTime
-    from expend e
-    LEFT JOIN expend_type et on e.fk_expend_type_id = et.id
-    LEFT JOIN expend_type et_p on et.fk_parent_id = et_p.id
+    from account_expend e
+    LEFT JOIN account_expend_type et on e.fk_expend_type_id = et.id
+    LEFT JOIN account_expend_type et_p on et.fk_parent_id = et_p.id
     LEFT JOIN sys_en_user u on e.fk_user_id = u.id
     left join com_event ce on e.fk_com_event_id = ce.id
     left join com_person cp on e.fk_com_person_id = cp.id

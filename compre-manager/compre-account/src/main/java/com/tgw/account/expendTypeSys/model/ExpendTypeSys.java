@@ -5,7 +5,7 @@ import com.tgw.basic.core.model.AbstractBaseBean;
 import javax.persistence.*;
 import java.util.Date;
 
-@Table(name = "expend_type_sys")
+@Table(name = "account_expend_type_sys")
 public class ExpendTypeSys extends AbstractBaseBean {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +18,7 @@ public class ExpendTypeSys extends AbstractBaseBean {
     private String expendTypeName;
 
     @Column(name = "order_num")
-    private String orderNum;
+    private Integer orderNum;
 
     @Column(name = "is_sys_own")
     private Integer isSysOwn;
@@ -73,17 +73,11 @@ public class ExpendTypeSys extends AbstractBaseBean {
         this.expendTypeName = expendTypeName;
     }
 
-    /**
-     * @return order_num
-     */
-    public String getOrderNum() {
+    public Integer getOrderNum() {
         return orderNum;
     }
 
-    /**
-     * @param orderNum
-     */
-    public void setOrderNum(String orderNum) {
+    public void setOrderNum(Integer orderNum) {
         this.orderNum = orderNum;
     }
 

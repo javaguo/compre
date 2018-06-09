@@ -6,7 +6,7 @@ import org.apache.commons.lang.StringUtils;
 import javax.persistence.*;
 import java.util.Date;
 
-@Table(name = "expend_type")
+@Table(name = "account_expend_type")
 public class ExpendType extends AbstractBaseBean {
     @Id
     @GeneratedValue(generator = "JDBC")
@@ -19,7 +19,7 @@ public class ExpendType extends AbstractBaseBean {
     private String expendTypeName;
 
     @Column(name = "order_num")
-    private String orderNum;
+    private Integer orderNum;
 
     @Column(name = "is_sys_own")
     private Integer isSysOwn;
@@ -83,11 +83,11 @@ public class ExpendType extends AbstractBaseBean {
         this.expendTypeName = expendTypeName;
     }
 
-    public String getOrderNum() {
+    public Integer getOrderNum() {
         return orderNum;
     }
 
-    public void setOrderNum(String orderNum) {
+    public void setOrderNum(Integer orderNum) {
         this.orderNum = orderNum;
     }
 

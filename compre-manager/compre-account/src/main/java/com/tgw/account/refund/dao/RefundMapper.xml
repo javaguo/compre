@@ -31,8 +31,8 @@
     u.login_name loginName,
     date_format(r.add_time, '%Y-%m-%d %H:%i:%s') addTime,
     date_format(r.update_time, '%Y-%m-%d %H:%i:%s') updateTime
-    from refund r
-    LEFT JOIN lend l on r.fk_lend_id = l.id
+    from account_refund r
+    LEFT JOIN account_lend l on r.fk_lend_id = l.id
     left join sys_en_user u on l.fk_user_id = u.id
     <where>
       <if test="refundDateStart!=null">

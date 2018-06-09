@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-@Table(name = "receipts")
+@Table(name = "account_receipts")
 public class Receipts extends AbstractBaseBean {
     @Id
     @GeneratedValue(generator = "JDBC")

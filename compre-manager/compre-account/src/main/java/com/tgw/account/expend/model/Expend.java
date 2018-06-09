@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-@Table(name = "expend")
+@Table(name = "account_expend")
 public class Expend extends AbstractBaseBean {
     @Id
     @GeneratedValue(generator = "JDBC")

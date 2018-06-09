@@ -9,7 +9,7 @@
     <result column="fk_parent_id" jdbcType="INTEGER" property="fkParentId" />
     <result column="expend_type_name" jdbcType="VARCHAR" property="expendTypeName" />
     <result column="is_sys_own" jdbcType="INTEGER" property="isSysOwn" />
-    <result column="order_num" jdbcType="VARCHAR" property="orderNum" />
+    <result column="order_num" jdbcType="INTEGER" property="orderNum" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
@@ -29,8 +29,8 @@
     u.login_name loginName,
     date_format(expend.add_time, '%Y-%m-%d %H:%i:%s') addTime,
     date_format(expend.update_time, '%Y-%m-%d %H:%i:%s') updateTime
-    from expend_type expend
-    LEFT JOIN  expend_type expend_p on expend.fk_parent_id = expend_p.id
+    from account_expend_type expend
+    LEFT JOIN  account_expend_type expend_p on expend.fk_parent_id = expend_p.id
     LEFT JOIN sys_en_user u on expend.fk_user_id = u.id
     <where>
       <if test="expendTypeName!=null and expendTypeName!='' ">
@@ -49,22 +49,22 @@
         and expend.fk_user_id = #{fkUserId}
       </if>
     </where>
-    order by CONVERT( u.user_name USING gbk) asc,CONVERT( CONCAT_WS('',expend_p.order_num,expend.order_num) USING gbk) asc
+    order by CONVERT( u.user_name USING gbk) asc,CONVERT( CONCAT_WS('',LPAD(expend_p.order_num,8,'0'),LPAD(expend.order_num,8,'0')) USING gbk) asc
   </select>
 
   <select id="queryExpendTypeTreeMap"  resultType="map">
     select tree.id,tree.expend_type_name,tree.fk_parent_id
-    from expend_type tree
-    LEFT JOIN  expend_type expend_p on tree.fk_parent_id = expend_p.id
+    from account_expend_type tree
+    LEFT JOIN  account_expend_type expend_p on tree.fk_parent_id = expend_p.id
     <where>
         tree.fk_user_id = #{fkUserId}
     </where>
-    order by CONVERT( CONCAT_WS('',expend_p.order_num,tree.order_num) USING gbk) asc
+    order by CONVERT( CONCAT_WS('',LPAD(expend_p.order_num,8,'0'),LPAD(tree.order_num,8,'0')) USING gbk) asc
   </select>
 
   <select id="queryChildRecord"  resultType="int">
     SELECT count(0)
-    from expend_type
+    from account_expend_type
     where
     fk_user_id = #{fkUserId}
     and fk_parent_id in
@@ -75,7 +75,7 @@
 
   <select id="queryExpendRecord"  resultType="int">
     SELECT count(0)
-    from expend e
+    from account_expend e
     where
     e.fk_user_id = #{fkUserId}
     and e.fk_expend_type_id in

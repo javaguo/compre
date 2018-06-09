@@ -8,7 +8,7 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="fk_parent_id" jdbcType="INTEGER" property="fkParentId" />
     <result column="receipts_type_name" jdbcType="VARCHAR" property="receiptsTypeName" />
-    <result column="order_num" jdbcType="VARCHAR" property="orderNum" />
+    <result column="order_num" jdbcType="INTEGER" property="orderNum" />
     <result column="is_sys_own" jdbcType="INTEGER" property="isSysOwn" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
@@ -27,8 +27,8 @@
     receipt.remark,
     date_format(receipt.add_time, '%Y-%m-%d %H:%i:%s') addTime,
     date_format(receipt.update_time, '%Y-%m-%d %H:%i:%s') updateTime
-    from receipts_type_sys receipt
-    left join receipts_type_sys receipt_p on receipt.fk_parent_id = receipt_p.id
+    from account_receipts_type_sys receipt
+    left join account_receipts_type_sys receipt_p on receipt.fk_parent_id = receipt_p.id
     <where>
       <if test="receiptsTypeName!=null and receiptsTypeName!='' ">
         and receipt.receipts_type_name like #{receiptsTypeNameCon}
@@ -37,19 +37,19 @@
         and receipt.fk_parent_id = #{fkParentId}
       </if>
     </where>
-    order by CONVERT( CONCAT_WS('',receipt_p.order_num,receipt.order_num) USING gbk) asc
+    order by CONVERT( CONCAT_WS('',LPAD(receipt_p.order_num,8,'0'),LPAD(receipt.order_num,8,'0')) USING gbk) asc
   </select>
 
   <select id="queryReceiptsTypeSysTreeMap"  resultType="map">
     select receipt.id,receipt.receipts_type_name,receipt.fk_parent_id
-    from receipts_type_sys receipt
-    LEFT JOIN  receipts_type_sys receipt_p on receipt.fk_parent_id = receipt_p.id
-    order by CONVERT( CONCAT_WS('',receipt_p.order_num,receipt.order_num) USING gbk) asc
+    from account_receipts_type_sys receipt
+    LEFT JOIN  account_receipts_type_sys receipt_p on receipt.fk_parent_id = receipt_p.id
+    order by CONVERT( CONCAT_WS('',LPAD(receipt_p.order_num,8,'0'),LPAD(receipt.order_num,8,'0')) USING gbk) asc
   </select>
 
   <select id="queryChildRecord"  resultType="int">
     SELECT count(0)
-    from receipts_type_sys
+    from account_receipts_type_sys
     where fk_parent_id in
     <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
       #{item}

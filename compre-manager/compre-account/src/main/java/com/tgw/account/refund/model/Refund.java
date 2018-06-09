@@ -6,7 +6,7 @@ import org.apache.commons.lang.StringUtils;
 import javax.persistence.*;
 import java.util.Date;
 
-@Table(name = "refund")
+@Table(name = "account_refund")
 public class Refund extends AbstractBaseBean {
     @Id
     @GeneratedValue(generator = "JDBC")

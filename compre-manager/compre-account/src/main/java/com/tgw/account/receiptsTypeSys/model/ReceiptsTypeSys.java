@@ -5,7 +5,7 @@ import com.tgw.basic.core.model.AbstractBaseBean;
 import javax.persistence.*;
 import java.util.Date;
 
-@Table(name = "receipts_type_sys")
+@Table(name = "account_receipts_type_sys")
 public class ReceiptsTypeSys extends AbstractBaseBean {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +18,7 @@ public class ReceiptsTypeSys extends AbstractBaseBean {
     private String receiptsTypeName;
 
     @Column(name = "order_num")
-    private String orderNum;
+    private Integer orderNum;
 
     @Column(name = "is_sys_own")
     private Integer isSysOwn;
@@ -73,17 +73,11 @@ public class ReceiptsTypeSys extends AbstractBaseBean {
         this.receiptsTypeName = receiptsTypeName;
     }
 
-    /**
-     * @return order_num
-     */
-    public String getOrderNum() {
+    public Integer getOrderNum() {
         return orderNum;
     }
 
-    /**
-     * @param orderNum
-     */
-    public void setOrderNum(String orderNum) {
+    public void setOrderNum(Integer orderNum) {
         this.orderNum = orderNum;
     }
 

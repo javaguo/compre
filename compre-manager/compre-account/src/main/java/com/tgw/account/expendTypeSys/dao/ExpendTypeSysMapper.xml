@@ -8,7 +8,7 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="fk_parent_id" jdbcType="INTEGER" property="fkParentId" />
     <result column="expend_type_name" jdbcType="VARCHAR" property="expendTypeName" />
-    <result column="order_num" jdbcType="VARCHAR" property="orderNum" />
+    <result column="order_num" jdbcType="INTEGER" property="orderNum" />
     <result column="is_sys_own" jdbcType="INTEGER" property="isSysOwn" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
@@ -26,8 +26,8 @@
     expend.remark remark,
     date_format(expend.add_time, '%Y-%m-%d %H:%i:%s') addTime,
     date_format(expend.update_time, '%Y-%m-%d %H:%i:%s') updateTime
-    from expend_type_sys expend
-    LEFT JOIN  expend_type_sys expend_p on expend.fk_parent_id = expend_p.id
+    from account_expend_type_sys expend
+    LEFT JOIN  account_expend_type_sys expend_p on expend.fk_parent_id = expend_p.id
     <where>
       <if test="expendTypeName!=null and expendTypeName!='' ">
         and expend.expend_type_name like #{expendTypeNameCon}
@@ -36,19 +36,19 @@
         and expend.fk_parent_id = #{fkParentId}
       </if>
     </where>
-    order by CONVERT( CONCAT_WS('',expend_p.order_num,expend.order_num) USING gbk) asc
+    order by CONVERT( CONCAT_WS('',LPAD(expend_p.order_num,8,'0'),LPAD(expend.order_num,8,'0')) USING gbk) asc
   </select>
 
   <select id="queryExpendTypeSysTreeMap"  resultType="map">
     select tree.id,tree.expend_type_name,tree.fk_parent_id
-    from expend_type_sys tree
-    LEFT JOIN  expend_type_sys expend_p on tree.fk_parent_id = expend_p.id
-    order by CONVERT( CONCAT_WS('',expend_p.order_num,tree.order_num) USING gbk) asc
+    from account_expend_type_sys tree
+    LEFT JOIN  account_expend_type_sys expend_p on tree.fk_parent_id = expend_p.id
+    order by CONVERT( CONCAT_WS('',LPAD(expend_p.order_num,8,'0'),LPAD(tree.order_num,8,'0')) USING gbk) asc
   </select>
 
   <select id="queryChildRecord"  resultType="int">
     SELECT count(0)
-    from expend_type_sys
+    from account_expend_type_sys
     where fk_parent_id in
     <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
       #{item}
@@ -62,7 +62,7 @@
     expend.order_num orderNum,
     expend.is_sys_own isSysOwn,
     expend.remark remark
-    from expend_type_sys et
+    from account_expend_type_sys et
     <where>
       et.fk_parent_id = #{parentId}
     </where>

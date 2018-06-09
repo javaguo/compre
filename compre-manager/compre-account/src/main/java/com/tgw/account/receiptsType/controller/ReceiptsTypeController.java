@@ -68,7 +68,7 @@ public class ReceiptsTypeController extends BaseController<ReceiptsType> {
         String receiptsTypeNameConfigs = "maxLength:10,maxLengthText:'最多输入10个字符'";
         String receiptsParentTypeConfigs = "multiSelect:false,emptyText:'请选择所属父类型'";
         String receiptsParentTypeTreeUrl = "receiptsType/loadTreeData.do?fieldMap=id:id,text:receipts_type_name,parentId:fk_parent_id&treeRootVal=-1&treeFlag=receiptsType&resType=map&multiSelect=false";
-        String orderNumConfigs = "maxLength:10,maxLengthText:'最多输入10个字符',vtype:'letterNum'";
+        String orderNumConfigs = "minValue:0,maxValue:99999999";
         String remarkConfigs = "width:400,height:80,maxLength:100,maxLengthText:'最多输入100个字符'";
         String userNameConfigs = "emptyText:'模糊查询'";
         String loginNameConfigs = "emptyText:'精确匹配'";
@@ -76,7 +76,7 @@ public class ReceiptsTypeController extends BaseController<ReceiptsType> {
         //超级管理员不做按类型搜索功能，因为各用户收入类型都不一样。
         controller.addFieldComboBoxTree( "fkParentId","收入父类型",true,true,true,!superAdminFlag,true,receiptsParentTypeConfigs,receiptsParentTypeTreeUrl );
         controller.addFieldText("receiptsTypeName","收入名称",true,true,true,true,false,receiptsTypeNameConfigs);
-        controller.addFieldText("orderNum","序号",true,true,true,false,false,orderNumConfigs);
+        controller.addFieldNumber("orderNum","序号",true,true,true,false,false,orderNumConfigs);
         controller.addFieldTextArea("remark","备注",true,true,true,false,true,remarkConfigs);
         if( PlatformUserUtils.isContainRoleByCode( PlatformSysConstant.SYS_ROLE_CODE_SUPER_ADMIN ) ){//是超级管理员角色
             controller.addFieldText("userName","用户名",true,false,false,true,true,userNameConfigs);

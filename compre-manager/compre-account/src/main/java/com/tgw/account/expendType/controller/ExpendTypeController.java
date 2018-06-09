@@ -70,7 +70,7 @@ public class ExpendTypeController extends BaseController<ExpendType> {
         String expendTypeNameConfigs = "maxLength:10,maxLengthText:'最多输入10个字符'";
         String expendParentTypeConfigs = "multiSelect:false,emptyText:'请选择所属父类型'";
         String expendParentTypeTreeUrl = "expendType/loadTreeData.do?fieldMap=id:id,text:expend_type_name,parentId:fk_parent_id&treeRootVal=-1&treeFlag=expendType&resType=map&multiSelect=false";
-        String orderNumConfigs = "maxLength:10,maxLengthText:'最多输入10个字符',vtype:'letterNum'";
+        String orderNumConfigs = "minValue:0,maxValue:99999999";
         String remarkConfigs = "width:400,height:80,maxLength:100,maxLengthText:'最多输入100个字符'";
         String userNameConfigs = "emptyText:'模糊查询'";
         String loginNameConfigs = "emptyText:'精确匹配'";
@@ -78,7 +78,7 @@ public class ExpendTypeController extends BaseController<ExpendType> {
         //超级管理员不做按类型搜索功能，因为各用户支出类型都不一样。
         controller.addFieldComboBoxTree( "fkParentId","支出父类型",true,true,true,!superAdminFlag,true,expendParentTypeConfigs,expendParentTypeTreeUrl );
         controller.addFieldText("expendTypeName","支出名称",true,true,true,true,false,expendTypeNameConfigs);
-        controller.addFieldText("orderNum","序号",true,true,true,false,false,orderNumConfigs);
+        controller.addFieldNumber("orderNum","序号",true,true,true,false,false,orderNumConfigs);
         controller.addFieldTextArea("remark","备注",true,true,true,false,true,remarkConfigs);
         if( PlatformUserUtils.isContainRoleByCode( PlatformSysConstant.SYS_ROLE_CODE_SUPER_ADMIN ) ){//是超级管理员角色
             controller.addFieldText("userName","用户名",true,false,false,true,true,userNameConfigs);

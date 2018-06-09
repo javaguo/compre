@@ -73,12 +73,12 @@ public class ReceiptsTypeSysController extends BaseController<ReceiptsTypeSys> {
         String receiptsTypeNameConfigs = "maxLength:10,maxLengthText:'最多输入10个字符'";
         String receiptsParentTypeConfigs = "multiSelect:false,emptyText:'请选择所属父类型'";
         String receiptsParentTypeTreeUrl = "receiptsTypeSys/loadTreeData.do?fieldMap=id:id,text:receipts_type_name,parentId:fk_parent_id&treeRootVal=-1&treeFlag=receiptsTypeSys&resType=map&multiSelect=false";
-        String orderNumConfigs = "maxLength:10,maxLengthText:'最多输入10个字符',vtype:'letterNum'";
+        String orderNumConfigs = "minValue:0,maxValue:99999999";
         String remarkConfigs = "width:400,height:80,maxLength:100,maxLengthText:'最多输入100个字符'";
 
         controller.addFieldComboBoxTree( "fkParentId","收入父类型",true,true,true,true,true,receiptsParentTypeConfigs,receiptsParentTypeTreeUrl );
         controller.addFieldText("receiptsTypeName","收入名称",true,true,true,true,false,receiptsTypeNameConfigs);
-        controller.addFieldText("orderNum","序号",true,true,true,false,false,orderNumConfigs);
+        controller.addFieldNumber("orderNum","序号",true,true,true,false,false,orderNumConfigs);
         controller.addFieldTextArea("remark","备注",true,true,true,false,true,remarkConfigs);
 
         controller.addFieldDatetime("addTime","添加时间",true,false,false,false,false,null);

@@ -9,7 +9,7 @@
 	,'累计收入(元)' title1
 	,(
 		select ROUND( SUM( r1.rec_sum )  , 2 )
-		from receipts r1
+		from account_receipts r1
 	  <where>
 		  <if test="fkUserId!=null">
 			  and r1.fk_user_id = #{fkUserId}
@@ -19,7 +19,7 @@
 	,'累计支出(元)' title2
 	,(
 		SELECT ROUND( SUM( e1.exp_sum ) ,2)
-		from expend e1
+		from account_expend e1
 	  <where>
 		  <if test="fkUserId!=null">
 			  and e1.fk_user_id = #{fkUserId}
@@ -31,7 +31,7 @@
 	,'累计收入(笔)' title3
 	,(
 		select count(0)
-		from receipts r1
+		from account_receipts r1
 	  <where>
 		  <if test="fkUserId!=null">
 			  and r1.fk_user_id = #{fkUserId}
@@ -41,7 +41,7 @@
 	,'累计支出(笔)' title4
 	,(
 		select count(0)
-		from expend e1
+		from account_expend e1
 	  <where>
 		  <if test="fkUserId!=null">
 			  and e1.fk_user_id = #{fkUserId}
@@ -56,7 +56,7 @@
 	  ,'收入总额(元)' title1
 	  ,(
 	  select ROUND( SUM( r1.rec_sum )  , 2 )
-	  from receipts r1
+	  from account_receipts r1
 	  <where>
 		  <if test="fkUserId!=null">
 			  and r1.fk_user_id = #{fkUserId}
@@ -72,7 +72,7 @@
 	  ,'支出总额(元)' title2
 	  ,(
 	  SELECT ROUND( SUM( e1.exp_sum ) ,2)
-	  from expend e1
+	  from account_expend e1
 	  <where>
 		  <if test="fkUserId!=null">
 			  and e1.fk_user_id = #{fkUserId}
@@ -90,7 +90,7 @@
 	  ,'收入(笔)' title3
 	  ,(
 	  select count(0)
-	  from receipts r1
+	  from account_receipts r1
 	  <where>
 		  <if test="fkUserId!=null">
 			  and r1.fk_user_id = #{fkUserId}
@@ -106,7 +106,7 @@
 	  ,'支出(笔)' title4
 	  ,(
 	  select count(0)
-	  from expend e1
+	  from account_expend e1
 	  <where>
 		  <if test="fkUserId!=null">
 			  and e1.fk_user_id = #{fkUserId}
@@ -127,7 +127,7 @@
 	  ,'收入总额(元)' title1
 	  ,(
 	  select ROUND( SUM( r1.rec_sum )  , 2 )
-	  from receipts r1
+	  from account_receipts r1
 	  <where>
 		  <if test="fkUserId!=null">
 			  and r1.fk_user_id = #{fkUserId}
@@ -143,7 +143,7 @@
 	  ,'支出总额(元)' title2
 	   ,(
 	  SELECT ROUND( SUM( e1.exp_sum ) ,2)
-	  from expend e1
+	  from account_expend e1
 	  <where>
 		  <if test="fkUserId!=null">
 			  and e1.fk_user_id = #{fkUserId}
@@ -161,7 +161,7 @@
 	  ,'收入(笔)' title3
 	  ,(
 	  select count(0)
-	  from receipts r1
+	  from account_receipts r1
 	  <where>
 		  <if test="fkUserId!=null">
 			  and r1.fk_user_id = #{fkUserId}
@@ -177,7 +177,7 @@
 	  ,'支出(笔)' title4
 	  ,(
 	  select count(0)
-	  from expend e1
+	  from account_expend e1
 	  <where>
 		  <if test="fkUserId!=null">
 			  and e1.fk_user_id = #{fkUserId}
@@ -198,7 +198,7 @@
 	,'累计借入(元)' title1
 	,(
 		SELECT ROUND( sum(l.lend_sum) ,2)
-		from lend l
+		from account_lend l
 	  <where>
 		  and l.lend_or_borrow = 0
 		  <if test="fkUserId!=null">
@@ -209,7 +209,7 @@
 	,'累计借出(元)' title2
 	,(
 		SELECT ROUND( sum(l.lend_sum) ,2)
-		from lend l
+		from account_lend l
 	  <where>
 		  and l.lend_or_borrow = 1
 		  <if test="fkUserId!=null">
@@ -222,7 +222,7 @@
 	,'累计借入(笔)' title3
 	,(
 		SELECT count(0)
-		from lend l
+		from account_lend l
 	  <where>
 		  and l.lend_or_borrow = 0
 		  <if test="fkUserId!=null">
@@ -233,7 +233,7 @@
 	,'累计借出(笔)' title4
 	,(
 		SELECT count(0)
-		from lend l
+		from account_lend l
 	  <where>
 		  and l.lend_or_borrow = 1
 		  <if test="fkUserId!=null">
@@ -249,7 +249,7 @@
 	  ,'借入总额(元)' title1
 	  ,(
 	  SELECT ROUND( sum(l.lend_sum) ,2)
-	  from lend l
+	  from account_lend l
 	  <where>
 		  and l.lend_or_borrow = 0
 		  <if test="fkUserId!=null">
@@ -266,7 +266,7 @@
 	  ,'借出总额(元)' title2
 	  ,(
 	  SELECT ROUND( sum(l.lend_sum) ,2)
-	  from lend l
+	  from account_lend l
 	  <where>
 		  and l.lend_or_borrow = 1
 		  <if test="fkUserId!=null">
@@ -285,7 +285,7 @@
 	  ,'借入(笔)' title3
 	  ,(
 	  SELECT count(0)
-	  from lend l
+	  from account_lend l
 	  <where>
 		  and l.lend_or_borrow = 0
 		  <if test="fkUserId!=null">
@@ -302,7 +302,7 @@
 	  ,'借出(笔)' title4
 	  ,(
 	  SELECT count(0)
-	  from lend l
+	  from account_lend l
 	  <where>
 		  and l.lend_or_borrow = 1
 		  <if test="fkUserId!=null">
@@ -324,7 +324,7 @@
 	,'借入未还清(元)' title1
 	,(
 		SELECT ROUND( sum(l.lend_sum-l.has_refunded_data) ,2)
-		from lend l
+		from account_lend l
 	  <where>
 		  and l.lend_or_borrow = 0
 		  and l.has_refunded = 0
@@ -336,7 +336,7 @@
 	,'借出未还清(元)' title2
 	,(
 		SELECT ROUND( sum(l.lend_sum-l.has_refunded_data) ,2)
-		from lend l
+		from account_lend l
 	  <where>
 		  and l.lend_or_borrow = 1
 		  and l.has_refunded = 0
@@ -350,7 +350,7 @@
 	,'借入未还清(笔)' title3
 	,(
 		SELECT count(0)
-		from lend l
+		from account_lend l
 	  <where>
 		  and l.lend_or_borrow = 0
 		  and l.has_refunded = 0
@@ -362,7 +362,7 @@
 	,'借出未还清(笔)' title4
 	,(
 		SELECT count(0)
-		from lend l
+		from account_lend l
 	  <where>
 		  and l.lend_or_borrow = 1
 		  and l.has_refunded = 0
