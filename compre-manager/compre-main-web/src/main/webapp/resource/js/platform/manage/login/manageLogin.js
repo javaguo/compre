@@ -39,7 +39,13 @@ function login(){
         dataType : "json",
         success:function(data){
             if(data.success==true){
-                document.location.href = contextPath+"login/toManageIndex.do";
+                var theme = data.theme;
+                if( theme.length>0 ){
+                    document.location.href = contextPath+"login/toManageIndex.do?theme="+theme;
+                }else{
+                    document.location.href = contextPath+"login/toManageIndex.do";
+                }
+
             }else{
                 $("#tip").html( data.info );
             }

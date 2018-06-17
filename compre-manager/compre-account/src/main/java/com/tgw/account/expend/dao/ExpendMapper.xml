@@ -78,4 +78,68 @@
     </where>
     order by e.exp_date desc
   </select>
+
+  <select id="queryStatisticsExpendData" parameterType="com.tgw.account.expend.model.Expend"  resultType="map">
+    SELECT t1.f_date,t1.t_id,et.expend_type_name, t1.sta_sum
+    from (
+          SELECT t.f_date,t.t_id,round(sum(t.exp_sum),2) sta_sum
+          from
+             (
+              SELECT ae.fk_expend_type_id t_id
+                     ,date_format( ae.exp_date, '%Y-%m') f_date,ae.exp_sum
+              from account_expend ae
+              where EXISTS ( SELECT 1 from account_expend_type et
+                                where ae.fk_expend_type_id = et.id
+                                  <if test="idList!=null">
+                                  and et.id in
+                                  <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+                                       #{item}
+                                  </foreach>
+                                  </if>
+                                  and et.fk_user_id = #{fkUserId}
+                              )
+              and ae.fk_user_id = #{fkUserId}
+              <if test="expDateStart!=null">
+              and ae.exp_date &gt;= #{expDateStart}
+              </if>
+              <if test="expDateEnd!=null">
+              and ae.exp_date &lt;= #{expDateEnd}
+              </if>
+              <if test="fkComEventId!=null">
+              and ae.fk_com_event_id = #{fkComEventId}
+              </if>
+              <if test="fkComPersonId!=null">
+              and ae.fk_com_person_id = #{fkComPersonId}
+              </if>
+           UNION all
+           SELECT et.fk_parent_id t_id
+                  ,date_format( ae.exp_date, '%Y-%m') f_date,ae.exp_sum
+            from account_expend ae,account_expend_type et
+            where ae.fk_expend_type_id = et.id
+            <if test="idList!=null">
+              and et.fk_parent_id in
+              <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+                  #{item}
+              </foreach>
+            </if>
+            and et.fk_user_id = #{fkUserId}
+            and ae.fk_user_id = #{fkUserId}
+            <if test="expDateStart!=null">
+            and ae.exp_date &gt;= #{expDateStart}
+            </if>
+            <if test="expDateEnd!=null">
+            and ae.exp_date &lt;= #{expDateEnd}
+            </if>
+            <if test="fkComEventId!=null">
+            and ae.fk_com_event_id = #{fkComEventId}
+            </if>
+            <if test="fkComPersonId!=null">
+            and ae.fk_com_person_id = #{fkComPersonId}
+            </if>
+          ) t group by t.f_date,t.t_id
+       ) t1,account_expend_type et
+    left join account_expend_type p_et on et.fk_parent_id = p_et.id
+    where t1.t_id = et.id
+    order by t1.f_date asc,CONCAT_WS('',LPAD(et.order_num,8,'0'),LPAD(p_et.order_num,8,'0') ) asc
+  </select>
 </mapper>

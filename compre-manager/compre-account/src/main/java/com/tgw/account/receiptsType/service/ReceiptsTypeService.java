@@ -1,6 +1,8 @@
 package com.tgw.account.receiptsType.service;
 
 
+import com.tgw.account.receipts.model.Receipts;
+import com.tgw.account.receiptsType.model.ReceiptsType;
 import com.tgw.basic.common.exception.PlatformException;
 import com.tgw.basic.framework.service.BaseService;
 
@@ -26,4 +28,11 @@ public interface ReceiptsTypeService extends BaseService {
      * @param idList
      */
     public abstract void checkBeforeDelete( List<String> idList );
+
+    /**
+     * 查询要统计的收入类型
+     * @param bean
+     * @return
+     */
+    List<ReceiptsType> queryStatisticsReceiptsType(  Receipts bean  );
 }

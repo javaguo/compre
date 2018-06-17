@@ -78,4 +78,69 @@
     </where>
     order by r.rec_date desc
   </select>
+
+
+  <select id="queryStatisticsReceiptsData" parameterType="com.tgw.account.receipts.model.Receipts"  resultType="map">
+SELECT t1.f_date,t1.t_id,rt.receipts_type_name, t1.sta_sum from (
+	SELECT t.f_date,t.t_id,round(sum(t.rec_sum),2) sta_sum
+	from
+	(
+		SELECT ar.fk_receipts_type_id t_id
+				,date_format( ar.rec_date, '%Y-%m') f_date,ar.rec_sum
+		from account_receipts ar
+		where EXISTS ( SELECT 1 from account_receipts_type rt
+								where ar.fk_receipts_type_id = rt.id
+                                <if test="idList!=null">
+                                  and rt.id in
+                                  <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+                                      #{item}
+                                  </foreach>
+                                </if>
+								  and rt.fk_user_id = #{fkUserId}
+                      )
+		  and ar.fk_user_id = #{fkUserId}
+        <if test="recDateStart!=null">
+          and ar.rec_date &gt;= #{recDateStart}
+        </if>
+        <if test="recDateEnd!=null">
+          and ar.rec_date &lt;= #{recDateEnd}
+        </if>
+        <if test="fkComEventId!=null">
+        and ar.fk_com_event_id = #{fkComEventId}
+        </if>
+        <if test="fkComPersonId!=null">
+        and ar.fk_com_person_id = #{fkComPersonId}
+        </if>
+		UNION all
+		SELECT rt.fk_parent_id t_id
+				,date_format( ar.rec_date, '%Y-%m') f_date,ar.rec_sum
+		from account_receipts ar,account_receipts_type rt
+		where ar.fk_receipts_type_id = rt.id
+          <if test="idList!=null">
+          and rt.fk_parent_id in
+          <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+            #{item}
+          </foreach>
+          </if>
+		  and rt.fk_user_id = #{fkUserId}
+		  and ar.fk_user_id = #{fkUserId}
+        <if test="recDateStart!=null">
+          and ar.rec_date &gt;= #{recDateStart}
+        </if>
+        <if test="recDateEnd!=null">
+          and ar.rec_date &lt;= #{recDateEnd}
+        </if>
+        <if test="fkComEventId!=null">
+        and ar.fk_com_event_id = #{fkComEventId}
+        </if>
+        <if test="fkComPersonId!=null">
+        and ar.fk_com_person_id = #{fkComPersonId}
+        </if>
+		) t
+		group by t.f_date,t.t_id
+	) t1,account_receipts_type rt
+left join account_receipts_type p_rt on rt.fk_parent_id = p_rt.id
+ where t1.t_id = rt.id
+ order by t1.f_date asc,CONCAT_WS('',LPAD(rt.order_num,8,'0'),LPAD(p_rt.order_num,8,'0') ) asc
+  </select>
 </mapper>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tgw.account.receiptsType.dao.ReceiptsTypeMapper">
-  <resultMap id="BaseResultMap" type="com.tgw.account.receiptsType.model.ReceiptsType">
+  <resultMap id="defaultResultMapReceiptsType" type="com.tgw.account.receiptsType.model.ReceiptsType">
     <!--
       WARNING - @mbg.generated
     -->
@@ -99,4 +99,21 @@
       #{item}
     </foreach>
   </select>
+
+  <select id="queryStatisticsReceiptsType"  resultMap="defaultResultMapReceiptsType">
+    select receipt.id,receipt.receipts_type_name,receipt.fk_parent_id
+    from account_receipts_type receipt
+    LEFT JOIN  account_receipts_type receipt_p on receipt.fk_parent_id = receipt_p.id
+    <where>
+      receipt.fk_user_id = #{fkUserId}
+      <if test="idList!=null">
+        and receipt.id in
+        <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+    </where>
+    order by CONVERT( CONCAT_WS('',LPAD(receipt_p.order_num,8,'0'),LPAD(receipt.order_num,8,'0')) USING gbk) asc
+  </select>
+
 </mapper>

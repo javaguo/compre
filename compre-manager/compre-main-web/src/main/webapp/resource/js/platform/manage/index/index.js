@@ -399,16 +399,16 @@ var themeComboox = Ext.create({
 		data : [
 			{ value: 'classic', name: 'Classic主题' },
 			{ value: 'gray', name: 'Gray主题' },
-			{ value: 'neptune', name: 'Neptune主题' },
-			{ value: 'crisp', name: 'Crisp主题' },
-			{ value: 'aria', name: 'aria主题' }
+			{ value: 'crisp', name: 'Crisp主题' }
+			//{ value: 'neptune', name: 'Neptune主题' },
+			//{ value: 'aria', name: 'aria主题' }
 		]
 	}),
 	//value: theme,
 	listeners: {
 		select: function(combo) {
 			var  theme = combo.getValue();
-			window.location.href="http://localhost:8080/framework/login/toManageIndex.do?theme="+theme;
+			window.location.href=globalBasePath+"login/toManageIndex.do?theme="+theme;
 			//以下方式切换主题时，页面内部嵌套部分无法切换主题
 			/*var href = 'resource/js/extjs/extjs5/packages/ext-theme-'+theme+'/build/resources/ext-theme-'+theme+'-all.css';
 			var link = Ext.fly('theme');
@@ -548,6 +548,7 @@ Ext.onReady(function() {
 		]
 	});
 
+	themeComboox.setValue( globalTheme );
 	loadPageInfo();
 	loadUserInfo();
 	//设置打开管理后台显示的默认tab窗口

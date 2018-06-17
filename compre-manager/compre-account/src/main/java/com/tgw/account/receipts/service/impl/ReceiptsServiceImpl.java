@@ -2,11 +2,14 @@ package com.tgw.account.receipts.service.impl;
 
 
 import com.tgw.account.receipts.dao.ReceiptsMapper;
+import com.tgw.account.receipts.model.Receipts;
 import com.tgw.account.receipts.service.ReceiptsService;
 import com.tgw.basic.framework.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 @Service("receiptsService")
 public class ReceiptsServiceImpl extends BaseServiceImpl implements ReceiptsService {
@@ -21,6 +24,15 @@ public class ReceiptsServiceImpl extends BaseServiceImpl implements ReceiptsServ
         if( null!=receiptsMapper ){
             super.setBaseModelMapper( this.getReceiptsMapper() );
         }
+    }
+
+    /**
+     * 统计收入数据
+     * @param receipts
+     * @return
+     */
+    public List<Map<String,Object>> queryStatisticsReceiptsData(Receipts receipts ){
+        return getReceiptsMapper().queryStatisticsReceiptsData( receipts );
     }
 
     public ReceiptsMapper getReceiptsMapper() {

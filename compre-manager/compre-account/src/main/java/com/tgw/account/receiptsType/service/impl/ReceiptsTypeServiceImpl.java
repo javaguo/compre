@@ -1,6 +1,7 @@
 package com.tgw.account.receiptsType.service.impl;
 
 
+import com.tgw.account.receipts.model.Receipts;
 import com.tgw.account.receiptsType.dao.ReceiptsTypeMapper;
 import com.tgw.account.receiptsType.model.ReceiptsType;
 import com.tgw.account.receiptsType.service.ReceiptsTypeService;
@@ -102,6 +103,10 @@ public class ReceiptsTypeServiceImpl extends BaseServiceImpl implements Receipts
         if( getReceiptsTypeMapper().queryReceiptsRecord( idList,PlatformUserUtils.getLoginUserInfo().getId() )>0 ){
             throw new PlatformException( "收入记录中已使用了要删除的收入类型，无法删除！若确定要删除收入类型，请先删除相应的收入记录！" );
         }
+    }
+
+    public List<ReceiptsType> queryStatisticsReceiptsType(Receipts bean) {
+        return getReceiptsTypeMapper().queryStatisticsReceiptsType( bean.getFkUserId(),bean.getIdList() );
     }
 
     public ReceiptsTypeMapper getReceiptsTypeMapper() {

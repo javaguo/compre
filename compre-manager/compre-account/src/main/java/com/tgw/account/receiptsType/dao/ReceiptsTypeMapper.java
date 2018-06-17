@@ -30,4 +30,12 @@ public interface ReceiptsTypeMapper extends BaseModelMapper<ReceiptsType> {
      * @return
      */
     public abstract int queryReceiptsRecord(  @Param("idList") List<String> idList ,@Param("fkUserId")int fkUserId );
+
+    /**
+     * 查询要统计的收入类型
+     * @param fkUserId
+     * @param idList
+     * @return
+     */
+    List<ReceiptsType> queryStatisticsReceiptsType(  @Param("fkUserId")int fkUserId,@Param("idList") List<String> idList  );
 }

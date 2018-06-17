@@ -1,6 +1,7 @@
 package com.tgw.account.expendType.service.impl;
 
 
+import com.tgw.account.expend.model.Expend;
 import com.tgw.account.expendType.dao.ExpendTypeMapper;
 import com.tgw.account.expendType.model.ExpendType;
 import com.tgw.account.expendType.service.ExpendTypeService;
@@ -98,6 +99,10 @@ public class ExpendTypeServiceImpl extends BaseServiceImpl implements ExpendType
         if( getExpendTypeMapper().queryExpendRecord( idList,PlatformUserUtils.getLoginUserInfo().getId() )>0 ){
             throw new PlatformException( "支出记录中已使用了要删除的支出类型，无法删除！若确定要删除支出类型，请先删除相应的支出记录！" );
         }
+    }
+
+    public List<ExpendType> queryStatisticsExpendType(Expend bean) {
+        return getExpendTypeMapper().queryStatisticsExpendType( bean.getFkUserId(),bean.getIdList() );
     }
 
     public ExpendTypeMapper getExpendTypeMapper() {

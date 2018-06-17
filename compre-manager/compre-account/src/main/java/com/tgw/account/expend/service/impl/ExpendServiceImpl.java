@@ -2,11 +2,14 @@ package com.tgw.account.expend.service.impl;
 
 
 import com.tgw.account.expend.dao.ExpendMapper;
+import com.tgw.account.expend.model.Expend;
 import com.tgw.account.expend.service.ExpendService;
 import com.tgw.basic.framework.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 @Service("expendService")
 public class ExpendServiceImpl extends BaseServiceImpl implements ExpendService {
@@ -21,6 +24,10 @@ public class ExpendServiceImpl extends BaseServiceImpl implements ExpendService 
         if( null!=expendMapper ){
             super.setBaseModelMapper( this.getExpendMapper() );
         }
+    }
+
+    public List<Map<String, Object>> queryStatisticsExpendData(Expend expend) {
+        return getExpendMapper().queryStatisticsExpendData(expend);
     }
 
     public ExpendMapper getExpendMapper() {

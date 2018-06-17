@@ -18,12 +18,8 @@
 	<meta http-equiv="keywords" content="管理系统">
 	<meta http-equiv="description" content="通用管理系统">
 
-	<script type="text/javascript" src="<%=basePath%>resource/plugin/jquery/jquery/jquery-1.12.4.min.js"></script>
-	<script type="text/javascript" src="<%=basePath%>resource/plugin/jquery/md5/jquery.md5.js"></script>
-
 	<link rel="stylesheet" type="text/css"
 		  href="resource/css/platform/manage/index/index.css">
-
 	<link rel="stylesheet" type="text/css"
 		  href="resource/plugin/extjs/extjs5/extjs5/packages/ext-theme-${theme}/build/resources/ext-theme-${theme}-all.css">
 	<%--<link rel="stylesheet" type="text/css"
@@ -31,11 +27,17 @@
 	<link rel="stylesheet" type="text/css"
 		  href="resource/plugin/extjs/extjs5/extjs5/resources/css/icon.css">
 
+	<script type="text/javascript" src="<%=basePath%>resource/plugin/jquery/jquery/jquery-1.12.4.min.js"></script>
+	<script type="text/javascript" src="<%=basePath%>resource/plugin/jquery/md5/jquery.md5.js"></script>
+	<!-- 需要放在index.jsp中提前加载，如果在业务页面中引入时报echarts is not define -->
+	<script type="text/javascript" src="<%=basePath%>resource/plugin/echart/echarts.min.js"></script>
+
 	<script type="text/javascript"
 			src="resource/plugin/extjs/extjs5/extjs5/ext-all.js"></script>
 	<!-- 语言包要在ext-all.js之后引入才能生效 -->
 	<script type="text/javascript"
 			src="resource/plugin/extjs/extjs5/extjs5/locale/ext-lang-<%=browserLang%>.js"></script>
+
 	<script type="text/javascript"
 			src="resource/plugin/extjs/extjs5/common/extPlatformCommon.js"></script>
 	<script type="text/javascript"
@@ -50,6 +52,7 @@
 
 	<script type="text/javascript">
 		var globalBasePath = '<%=basePath%>';
+		var globalTheme = '${theme}';
 	</script>
 </head>
 <body>

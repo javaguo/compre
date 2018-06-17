@@ -1,6 +1,8 @@
 package com.tgw.account.expendType.service;
 
 
+import com.tgw.account.expend.model.Expend;
+import com.tgw.account.expendType.model.ExpendType;
 import com.tgw.basic.common.exception.PlatformException;
 import com.tgw.basic.framework.service.BaseService;
 
@@ -26,4 +28,11 @@ public interface ExpendTypeService extends BaseService {
      * @param idList
      */
     public abstract void checkBeforeDelete( List<String> idList );
+
+    /**
+     * 查询要统计的支出类型
+     * @param bean
+     * @return
+     */
+    List<ExpendType> queryStatisticsExpendType(Expend bean  );
 }

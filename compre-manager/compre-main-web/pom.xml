@@ -15,6 +15,29 @@
     <url>http://maven.apache.org</url>
 
     <dependencies>
+        <!-- 业务组件开始 -->
+        <dependency>
+            <groupId>com.tgw.compre</groupId>
+            <artifactId>compre-account</artifactId>
+            <version>${account-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tgw.compre</groupId>
+            <artifactId>compre-omnipotent</artifactId>
+            <version>${project-version}</version>
+        </dependency>
+        <!-- 业务组件结束 -->
+
+
+        <!-- 框架示例组件开始 -->
+        <dependency>
+            <groupId>com.tgw.basic</groupId>
+            <artifactId>basic-example-web</artifactId>
+            <version>${basic-version}</version>
+        </dependency>
+        <!-- 框架示例组件结束 -->
+
+        <!-- 框架组件开始 -->
         <dependency>
             <groupId>com.tgw.basic</groupId>
             <artifactId>basic-framework-web</artifactId>
@@ -52,18 +75,9 @@
             <artifactId>basic-system-user-web</artifactId>
             <version>${basic-version}</version>
         </dependency>
+        <!-- 框架组件结束 -->
 
-        <dependency>
-            <groupId>com.tgw.compre</groupId>
-            <artifactId>compre-account</artifactId>
-            <version>${account-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.tgw.compre</groupId>
-            <artifactId>compre-omnipotent</artifactId>
-            <version>${project-version}</version>
-        </dependency>
-
+        <!-- 第三方组件开始 -->
         <!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils-core -->
         <dependency>
             <groupId>commons-beanutils</groupId>
@@ -194,13 +208,16 @@
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
+        <!-- 第三方组件结束 -->
 
+        <!-- 测试开始 -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>3.8.1</version>
             <scope>test</scope>
         </dependency>
+        <!-- 测试结束 -->
     </dependencies>
     <build>
         <finalName>compre-main-web</finalName>

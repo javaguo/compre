@@ -30,4 +30,12 @@ public interface ExpendTypeMapper extends BaseModelMapper<ExpendType> {
      * @return
      */
     public abstract int queryExpendRecord(  @Param("idList") List<String> idList ,@Param("fkUserId")int fkUserId );
+
+    /**
+     * 查询要统计的支出类型
+     * @param fkUserId
+     * @param idList
+     * @return
+     */
+    List queryStatisticsExpendType(  @Param("fkUserId")int fkUserId,@Param("idList") List<String> idList  );
 }
