@@ -1,12 +1,14 @@
 -- 清库脚本
-DELETE from lend;
-DELETE from refund;
+DELETE from account_lend;
+DELETE from account_refund;
 
-DELETE from expend;
-DELETE from expend_type;
+DELETE from account_expend;
+DELETE from account_expend_type;
+DELETE from account_expend_type_sys;
 
-DELETE from receipts;
-DELETE from receipts_type;
+DELETE from account_receipts;
+DELETE from account_receipts_type;
+DELETE from account_receipts_type_sys;
 
 DELETE from com_event;
 DELETE from com_events_interval;
