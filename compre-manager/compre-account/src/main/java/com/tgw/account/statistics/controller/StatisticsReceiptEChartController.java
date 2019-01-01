@@ -54,7 +54,7 @@ public class StatisticsReceiptEChartController extends BaseController<Receipts> 
 
     @Override
     public void initSearchModel(HttpServletRequest request, HttpServletResponse response, ModelAndView modelAndView, SysEnController controller, Receipts bean) throws PlatformException {
-        controller.addJsFileNameUserDefinePath( "page/manage/compreAccount/statistics/js/statisticsReceiptEChart.js" );
+        controller.addJsFileNameUserDefinePath( "page/manage/compreAccount/statistics/js/statisticsReceiptEchart.js" );
 
         modelAndView.addObject(FrameworkConstant.FW_SEARCH_MODEL_SEARCH_CALLBACK_FUNCTION_NAME,"statisticsReceiptEChartCallback");
         modelAndView.addObject(FrameworkConstant.FW_SEARCH_MODEL_FREE_AREA_ELEMENT_ID,"statisticsReceiptEChartShowResEle");
