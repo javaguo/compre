@@ -23,6 +23,11 @@
         </dependency>
         <dependency>
             <groupId>com.tgw.compre</groupId>
+            <artifactId>compre-account-m</artifactId>
+            <version>${account-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tgw.compre</groupId>
             <artifactId>compre-omnipotent</artifactId>
             <version>${project-version}</version>
         </dependency>
@@ -73,6 +78,12 @@
         <dependency>
             <groupId>com.tgw.basic</groupId>
             <artifactId>basic-system-user-web</artifactId>
+            <version>${basic-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tgw.basic</groupId>
+            <artifactId>basic-mobile-web</artifactId>
             <version>${basic-version}</version>
         </dependency>
         <!-- 框架组件结束 -->

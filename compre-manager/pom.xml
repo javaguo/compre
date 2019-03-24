@@ -17,6 +17,7 @@
         <module>compre-account</module>
         <module>compre-omnipotent</module>
         <module>compre-main-web</module>
+        <module>compre-account-m</module>
     </modules>
 
     <profiles>
