@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,6 +35,13 @@ public class ExpendMobileController extends BaseController<Expend> {
     private ComEventService comEventService;
     @Resource
     private ComPersonService comPersonService;
+
+    @PostConstruct
+    public void initExpendMobile(){
+        if( null!=this.getExpendService() ){
+            super.initService(  this.getExpendService()  );
+        }
+    }
 
     @Override
     public void initControllerBaseInfo(SysEnController controller) throws PlatformException {
@@ -56,11 +64,11 @@ public class ExpendMobileController extends BaseController<Expend> {
         * 1.BaseController会调用统一的searchData()接口查询具体的业务数据。
         * 2.具体业务的mapper文件中实现searchData查询语句
         */
-        if( null!=this.getExpendService() ){
+        /*if( null!=this.getExpendService() ){
             super.initService(  this.getExpendService()  );
         }else{
 
-        }
+        }*/
 
     }
 
@@ -132,9 +140,9 @@ public class ExpendMobileController extends BaseController<Expend> {
 
     @Override
     public void beforeSaveBean(HttpServletRequest request, HttpServletResponse response, Expend bean) throws PlatformException{
-        if( null!=this.getExpendService() ){
+       /* if( null!=this.getExpendService() ){
             super.initService(  this.getExpendService()  );
-        }
+        }*/
         bean.setFkUserId( PlatformUserUtils.getLoginUserInfo().getId() );
 
         Date date = new Date();
