@@ -19,6 +19,7 @@
 
   <select id="searchData" parameterType="com.tgw.account.expend.model.Expend"  resultType="map">
     <bind name="userNameCon" value="'%' + _parameter.getUserName() + '%'" />
+    <!--<bind name="remarkCon" value="'%' + _parameter.getRemark() + '%'" />-->
 
     SELECT e.id,
     et_p.expend_type_name expendParentTypeName,
@@ -75,6 +76,9 @@
       <if test="fkComPersonId!=null">
         and e.fk_com_person_id = #{fkComPersonId}
       </if>
+      <!--<if test="remark!=null and remark!='' ">
+          and e.remark like #{remarkCon}
+      </if>-->
     </where>
     order by e.exp_date desc
   </select>

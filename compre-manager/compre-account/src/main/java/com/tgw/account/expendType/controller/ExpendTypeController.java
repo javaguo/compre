@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,6 +27,13 @@ public class ExpendTypeController extends BaseController<ExpendType> {
 
     @Resource
     private ExpendTypeService expendTypeService;
+
+    @PostConstruct
+    public void initExpendMobile(){
+        if( null!=this.getExpendTypeService() ){
+            super.initService(  this.getExpendTypeService()  );
+        }
+    }
 
     @Override
     public void initControllerBaseInfo(SysEnController controller) throws PlatformException {

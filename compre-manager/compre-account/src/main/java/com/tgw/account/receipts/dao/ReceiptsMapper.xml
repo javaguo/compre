@@ -19,6 +19,7 @@
 
   <select id="searchData" parameterType="com.tgw.account.receipts.model.Receipts"  resultType="map">
     <bind name="userNameCon" value="'%' + _parameter.getUserName() + '%'" />
+    <!--<bind name="remarkCon" value="'%' + _parameter.getRemark() + '%'" />-->
 
     select r.id,
     rt_p.receipts_type_name receiptsParentTypeName,
@@ -75,6 +76,9 @@
       <if test="fkComPersonId!=null">
         and r.fk_com_person_id = #{fkComPersonId}
       </if>
+      <!--<if test="remark!=null and remark!='' ">
+          and r.remark like #{remarkCon}
+      </if>-->
     </where>
     order by r.rec_date desc
   </select>
