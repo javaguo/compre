@@ -1,5 +1,6 @@
 package com.tgw.account.m.receiptsType;
 
+import com.tgw.account.m.utils.TypeUtil;
 import com.tgw.account.receiptsType.model.ReceiptsType;
 import com.tgw.account.receiptsType.service.ReceiptsTypeService;
 import com.tgw.basic.common.exception.PlatformException;
@@ -76,6 +77,7 @@ public class ReceiptsTypeMobileController extends BaseController<ReceiptsType> {
 
         if( "receiptsType".equals( treeFlag ) ){//收入类型
             res = getReceiptsTypeService().queryReceiptsTypeMap( String.valueOf( PlatformUserUtils.getLoginUserInfo().getId() ) );
+            res = TypeUtil.removeNoChildNode(res);
         }else{
             throw new PlatformException("获取树节点信息时没有找到匹配的查询方法！");
         }

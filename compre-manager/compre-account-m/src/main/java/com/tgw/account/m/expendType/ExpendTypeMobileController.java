@@ -2,6 +2,7 @@ package com.tgw.account.m.expendType;
 
 import com.tgw.account.expendType.model.ExpendType;
 import com.tgw.account.expendType.service.ExpendTypeService;
+import com.tgw.account.m.utils.TypeUtil;
 import com.tgw.basic.common.exception.PlatformException;
 import com.tgw.basic.common.utils.config.PlatformSysConstant;
 import com.tgw.basic.framework.controller.BaseController;
@@ -76,6 +77,7 @@ public class ExpendTypeMobileController extends BaseController<ExpendType> {
 
         if( "expendType".equals( treeFlag ) ){//支出类型
             res = getExpendTypeService().queryExpendTypeTreeMap(  String.valueOf( PlatformUserUtils.getLoginUserInfo().getId() )  );
+            res = TypeUtil.removeNoChildNode(res);
         }
         return res;
     }
