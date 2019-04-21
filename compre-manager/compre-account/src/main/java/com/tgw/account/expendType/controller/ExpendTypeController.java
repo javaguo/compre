@@ -62,6 +62,12 @@ public class ExpendTypeController extends BaseController<ExpendType> {
 
         }
 
+        String width = "500";
+        String height = "260";
+        String addWindowConfigs = "title: '添加支出类型',width:"+width+",height:"+height;
+        String editWindowConfigs = "title: '编辑支出类型',width:"+width+",height:"+height;
+        String viewWindowConfigs = "title: '查看支出类型',width:"+width+",height:"+height;
+        controller.addWindowConfig( addWindowConfigs,editWindowConfigs,viewWindowConfigs );
     }
 
     @Override

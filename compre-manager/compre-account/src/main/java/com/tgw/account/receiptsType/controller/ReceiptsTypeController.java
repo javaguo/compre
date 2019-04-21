@@ -52,6 +52,12 @@ public class ReceiptsTypeController extends BaseController<ReceiptsType> {
 
         }
 
+        String width = "500";
+        String height = "260";
+        String addWindowConfigs = "title: '添加收入类型',width:"+width+",height:"+height;
+        String editWindowConfigs = "title: '编辑收入类型',width:"+width+",height:"+height;
+        String viewWindowConfigs = "title: '查看收入类型',width:"+width+",height:"+height;
+        controller.addWindowConfig( addWindowConfigs,editWindowConfigs,viewWindowConfigs );
     }
 
     @Override

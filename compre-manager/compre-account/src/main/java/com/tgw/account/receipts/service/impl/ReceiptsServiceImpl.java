@@ -4,6 +4,9 @@ package com.tgw.account.receipts.service.impl;
 import com.tgw.account.receipts.dao.ReceiptsMapper;
 import com.tgw.account.receipts.model.Receipts;
 import com.tgw.account.receipts.service.ReceiptsService;
+import com.tgw.account.receiptsType.dao.ReceiptsTypeMapper;
+import com.tgw.account.receiptsType.model.ReceiptsType;
+import com.tgw.basic.common.exception.PlatformException;
 import com.tgw.basic.framework.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +18,8 @@ import java.util.Map;
 public class ReceiptsServiceImpl extends BaseServiceImpl implements ReceiptsService {
     @Resource
     private ReceiptsMapper receiptsMapper;
+    @Resource
+    private ReceiptsTypeMapper receiptsTypeMapper;
 
     @Override
     public void initMapper() {
@@ -35,11 +40,27 @@ public class ReceiptsServiceImpl extends BaseServiceImpl implements ReceiptsServ
         return getReceiptsMapper().queryStatisticsReceiptsData( receipts );
     }
 
+    public void checkReceiptsBeforSaveOrUpdate(Receipts receipts) throws PlatformException {
+        ReceiptsType receiptsType = new ReceiptsType();
+        receiptsType.setId( receipts.getFkReceiptsTypeId() );
+        receiptsType = getReceiptsTypeMapper().selectByPrimaryKey(receiptsType);
+        if( receiptsType.getFkParentId()==-1 ){
+            throw new PlatformException("收入类型只能选二级收入类型！");
+        }
+    }
     public ReceiptsMapper getReceiptsMapper() {
         return receiptsMapper;
     }
 
     public void setReceiptsMapper(ReceiptsMapper receiptsMapper) {
         this.receiptsMapper = receiptsMapper;
+    }
+
+    public ReceiptsTypeMapper getReceiptsTypeMapper() {
+        return receiptsTypeMapper;
+    }
+
+    public void setReceiptsTypeMapper(ReceiptsTypeMapper receiptsTypeMapper) {
+        this.receiptsTypeMapper = receiptsTypeMapper;
     }
 }

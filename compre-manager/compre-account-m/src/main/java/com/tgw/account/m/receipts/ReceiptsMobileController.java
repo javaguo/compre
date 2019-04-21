@@ -92,6 +92,8 @@ public class ReceiptsMobileController extends BaseController<Receipts> {
     public void beforeSaveBean(HttpServletRequest request, HttpServletResponse response, Receipts bean) throws PlatformException{
         bean.setFkUserId( PlatformUserUtils.getLoginUserInfo().getId() );
 
+        this.getReceiptsService().checkReceiptsBeforSaveOrUpdate(bean);
+
         Date date = new Date();
         bean.setAddTime( date );
         bean.setUpdateTime( date );
@@ -100,6 +102,8 @@ public class ReceiptsMobileController extends BaseController<Receipts> {
     @Override
     public void beforeUpdateBean(HttpServletRequest request, HttpServletResponse response,Object bean  ) throws PlatformException{
         Receipts tempBean = (Receipts)bean;
+
+        this.getReceiptsService().checkReceiptsBeforSaveOrUpdate(tempBean);
 
         Receipts receipts = new Receipts();
         receipts.setId(tempBean.getId());

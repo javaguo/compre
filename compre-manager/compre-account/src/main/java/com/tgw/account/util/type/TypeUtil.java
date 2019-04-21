@@ -1,4 +1,4 @@
-package com.tgw.account.m.utils;
+package com.tgw.account.util.type;
 
 import org.apache.commons.collections.CollectionUtils;
 

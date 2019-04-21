@@ -86,6 +86,8 @@ public class ExpendMobileController extends BaseController<Expend> {
     public void beforeSaveBean(HttpServletRequest request, HttpServletResponse response, Expend bean) throws PlatformException{
         bean.setFkUserId( PlatformUserUtils.getLoginUserInfo().getId() );
 
+        this.getExpendService().checkExpendBeforSaveOrUpdate(bean);
+
         Date date = new Date();
         bean.setAddTime( date );
         bean.setUpdateTime( date );
@@ -94,6 +96,8 @@ public class ExpendMobileController extends BaseController<Expend> {
     @Override
     public void beforeUpdateBean(HttpServletRequest request, HttpServletResponse response,Object bean  ) throws PlatformException{
         Expend tempBean = (Expend)bean;
+
+        this.getExpendService().checkExpendBeforSaveOrUpdate(tempBean);
 
         Expend expend = new Expend();
         expend.setId(tempBean.getId());

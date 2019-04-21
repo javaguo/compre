@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,6 +36,22 @@ public class ExpendController extends BaseController<Expend> {
     @Resource
     private ComPersonService comPersonService;
 
+    @PostConstruct
+    public void initExpendMobile(){
+        if( null!=this.getExpendService() ){
+            super.initService(  this.getExpendService()  );
+        }
+    }
+
+    @Override
+    public void initSearch(HttpServletRequest request, HttpServletResponse response, ModelAndView modelAndView, SysEnController controller, Expend bean ) throws PlatformException {
+        String width = "500";
+        String height = "320";
+        String addWindowConfigs = "title: '添加支出',width:"+width+",height:"+height;
+        String editWindowConfigs = "title: '编辑支出',width:"+width+",height:"+height;
+        String viewWindowConfigs = "title: '查看支出',width:"+width+",height:"+height;
+        controller.addWindowConfig( addWindowConfigs,editWindowConfigs,viewWindowConfigs );
+    }
 
     @Override
     public void initControllerBaseInfo(SysEnController controller) throws PlatformException {
@@ -43,26 +60,6 @@ public class ExpendController extends BaseController<Expend> {
         controller.setControllerBaseUrl( "expend/" );//控制器的请求地址
 
         controller.setSearchConditionColNum(2);
-    }
-
-    @Override
-    public void initSearch(HttpServletRequest request, HttpServletResponse response, ModelAndView modelAndView, SysEnController controller, Expend bean ) throws PlatformException {
-        /**
-        * 将具体的业务的service对象赋值给baseservice，必须的操作。
-        * service层需要将具体业务的mapper赋值给BaseModelMapper
-        *
-        * 此操作主要解决的问题是BaseModelMapper无法注入到BaseServiceImpl中的问题。手动赋值。
-        *
-        * 要点：
-        * 1.BaseController会调用统一的searchData()接口查询具体的业务数据。
-        * 2.具体业务的mapper文件中实现searchData查询语句
-        */
-        if( null!=this.getExpendService() ){
-            super.initService(  this.getExpendService()  );
-        }else{
-
-        }
-
     }
 
     @Override
@@ -135,6 +132,8 @@ public class ExpendController extends BaseController<Expend> {
     public void beforeSaveBean(HttpServletRequest request, HttpServletResponse response, Expend bean) throws PlatformException{
         bean.setFkUserId( PlatformUserUtils.getLoginUserInfo().getId() );
 
+        this.getExpendService().checkExpendBeforSaveOrUpdate(bean);
+
         Date date = new Date();
         bean.setAddTime( date );
         bean.setUpdateTime( date );
@@ -143,6 +142,7 @@ public class ExpendController extends BaseController<Expend> {
     @Override
     public void beforeUpdateBean(HttpServletRequest request, HttpServletResponse response,Object bean  ) throws PlatformException{
         Expend tempBean = (Expend)bean;
+        this.getExpendService().checkExpendBeforSaveOrUpdate(tempBean);
         tempBean.setUpdateTime( new Date() );
     }
 

@@ -1,8 +1,8 @@
 package com.tgw.account.m.receiptsType;
 
-import com.tgw.account.m.utils.TypeUtil;
 import com.tgw.account.receiptsType.model.ReceiptsType;
 import com.tgw.account.receiptsType.service.ReceiptsTypeService;
+import com.tgw.account.util.type.TypeUtil;
 import com.tgw.basic.common.exception.PlatformException;
 import com.tgw.basic.common.utils.config.PlatformSysConstant;
 import com.tgw.basic.framework.controller.BaseController;

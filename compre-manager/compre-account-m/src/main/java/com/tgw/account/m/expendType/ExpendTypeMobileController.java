@@ -2,7 +2,7 @@ package com.tgw.account.m.expendType;
 
 import com.tgw.account.expendType.model.ExpendType;
 import com.tgw.account.expendType.service.ExpendTypeService;
-import com.tgw.account.m.utils.TypeUtil;
+import com.tgw.account.util.type.TypeUtil;
 import com.tgw.basic.common.exception.PlatformException;
 import com.tgw.basic.common.utils.config.PlatformSysConstant;
 import com.tgw.basic.framework.controller.BaseController;

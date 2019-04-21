@@ -55,10 +55,12 @@ public class ReceiptsTypeSysController extends BaseController<ReceiptsTypeSys> {
         *此处的配置会覆盖jsp页面中默认的配置。
         * 此处配置也可以写在   initControllerBaseInfo()或initField()或initFunction()方法中
         */
-        //String addWindowConfigs = "title: '添加窗口',width:800";
-        //String editWindowConfigs = "title: '编辑窗口',width:800";
-        //String viewWindowConfigs = "title: '查看详情窗口',width:600";
-        //controller.addWindowConfig( addWindowConfigs,editWindowConfigs,viewWindowConfigs );
+        String width = "500";
+        String height = "260";
+        String addWindowConfigs = "title: '添加系统默认收入类型',width:"+width+",height:"+height;
+        String editWindowConfigs = "title: '编辑系统默认收入类型',width:"+width+",height:"+height;
+        String viewWindowConfigs = "title: '查看系统默认收入类型',width:"+width+",height:"+height;
+        controller.addWindowConfig( addWindowConfigs,editWindowConfigs,viewWindowConfigs );
     }
 
     @Override

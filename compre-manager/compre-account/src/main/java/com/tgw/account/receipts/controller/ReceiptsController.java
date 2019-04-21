@@ -2,6 +2,7 @@ package com.tgw.account.receipts.controller;
 
 import com.tgw.account.receipts.model.Receipts;
 import com.tgw.account.receipts.service.ReceiptsService;
+import com.tgw.account.receiptsType.service.ReceiptsTypeService;
 import com.tgw.basic.common.exception.PlatformException;
 import com.tgw.basic.common.utils.PlatformUtils;
 import com.tgw.basic.common.utils.config.PlatformSysConstant;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,9 +33,28 @@ public class ReceiptsController extends BaseController<Receipts> {
     @Resource
     private ReceiptsService receiptsService;
     @Resource
+    private ReceiptsTypeService receiptsTypeService;
+    @Resource
     private ComEventService comEventService;
     @Resource
     private ComPersonService comPersonService;
+
+    @PostConstruct
+    public void initReceiptsMobile(){
+        if( null!=this.getReceiptsService() ){
+            super.initService(  this.getReceiptsService()  );
+        }
+    }
+
+    @Override
+    public void initSearch(HttpServletRequest request, HttpServletResponse response, ModelAndView modelAndView, SysEnController controller, Receipts bean ) throws PlatformException {
+        String width = "500";
+        String height = "320";
+        String addWindowConfigs = "title: '添加收入',width:"+width+",height:"+height;
+        String editWindowConfigs = "title: '编辑收入',width:"+width+",height:"+height;
+        String viewWindowConfigs = "title: '查看收入',width:"+width+",height:"+height;
+        controller.addWindowConfig( addWindowConfigs,editWindowConfigs,viewWindowConfigs );
+    }
 
     @Override
     public void initControllerBaseInfo(SysEnController controller) throws PlatformException {
@@ -42,26 +63,6 @@ public class ReceiptsController extends BaseController<Receipts> {
         controller.setControllerBaseUrl( "receipts/" );//控制器的请求地址
 
         controller.setSearchConditionColNum(2);
-    }
-
-    @Override
-    public void initSearch(HttpServletRequest request, HttpServletResponse response, ModelAndView modelAndView, SysEnController controller, Receipts bean ) throws PlatformException {
-        /**
-        * 将具体的业务的service对象赋值给baseservice，必须的操作。
-        * service层需要将具体业务的mapper赋值给BaseModelMapper
-        *
-        * 此操作主要解决的问题是BaseModelMapper无法注入到BaseServiceImpl中的问题。手动赋值。
-        *
-        * 要点：
-        * 1.BaseController会调用统一的searchData()接口查询具体的业务数据。
-        * 2.具体业务的mapper文件中实现searchData查询语句
-        */
-        if( null!=this.getReceiptsService() ){
-            super.initService(  this.getReceiptsService()  );
-        }else{
-
-        }
-
     }
 
     @Override
@@ -134,6 +135,8 @@ public class ReceiptsController extends BaseController<Receipts> {
     public void beforeSaveBean(HttpServletRequest request, HttpServletResponse response, Receipts bean) throws PlatformException{
         bean.setFkUserId( PlatformUserUtils.getLoginUserInfo().getId() );
 
+        this.getReceiptsService().checkReceiptsBeforSaveOrUpdate(bean);
+
         Date date = new Date();
         bean.setAddTime( date );
         bean.setUpdateTime( date );
@@ -142,6 +145,7 @@ public class ReceiptsController extends BaseController<Receipts> {
     @Override
     public void beforeUpdateBean(HttpServletRequest request, HttpServletResponse response,Object bean  ) throws PlatformException{
         Receipts tempBean = (Receipts)bean;
+        this.getReceiptsService().checkReceiptsBeforSaveOrUpdate(tempBean);
         tempBean.setUpdateTime( new Date() );
     }
 
@@ -194,6 +198,14 @@ public class ReceiptsController extends BaseController<Receipts> {
 
     public void setReceiptsService(ReceiptsService receiptsService) {
         this.receiptsService = receiptsService;
+    }
+
+    public ReceiptsTypeService getReceiptsTypeService() {
+        return receiptsTypeService;
+    }
+
+    public void setReceiptsTypeService(ReceiptsTypeService receiptsTypeService) {
+        this.receiptsTypeService = receiptsTypeService;
     }
 
     public ComEventService getComEventService() {
