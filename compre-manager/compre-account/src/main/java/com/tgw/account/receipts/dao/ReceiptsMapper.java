@@ -13,4 +13,11 @@ public interface ReceiptsMapper extends BaseModelMapper<Receipts> {
      * @return
      */
     List<Map<String,Object>> queryStatisticsReceiptsData(Receipts receipts );
+
+    /**
+     * 根据条件求总和
+     * @param receipts
+     * @return
+     */
+    Double statisticSum(Receipts receipts);
 }

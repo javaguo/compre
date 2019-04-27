@@ -17,6 +17,12 @@ public interface ReceiptsService extends BaseService {
      */
     List<Map<String,Object>> queryStatisticsReceiptsData(Receipts receipts );
 
+    /**
+     * 根据条件求总和
+     * @param receipts
+     * @return
+     */
+    Double statisticSum(Receipts receipts);
 
     /**
      * 保存更新收入数据时进行校验

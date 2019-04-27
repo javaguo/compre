@@ -35,6 +35,10 @@ public class ExpendServiceImpl extends BaseServiceImpl implements ExpendService 
         return getExpendMapper().queryStatisticsExpendData(expend);
     }
 
+    public Double statisticSum(Expend expend) {
+        return getExpendMapper().statisticSum(expend);
+    }
+
     public void checkExpendBeforSaveOrUpdate(Expend expend) throws PlatformException {
         ExpendType expendType = new ExpendType();
         expendType.setId( expend.getFkExpendTypeId() );

@@ -18,6 +18,7 @@
   </resultMap>
 
   <select id="searchData" parameterType="com.tgw.account.receipts.model.Receipts"  resultType="map">
+      <!-- searchData、statisticSum查询条件要保持一致，条件调整需要同步调整 -->
     <bind name="userNameCon" value="'%' + _parameter.getUserName() + '%'" />
     <!--<bind name="remarkCon" value="'%' + _parameter.getRemark() + '%'" />-->
 
@@ -83,6 +84,49 @@
     order by r.rec_date desc
   </select>
 
+    <select id="statisticSum" parameterType="com.tgw.account.receipts.model.Receipts"  resultType="Double">
+        <!-- searchData、statisticSum查询条件要保持一致，条件调整需要同步调整 -->
+        <bind name="userNameCon" value="'%' + _parameter.getUserName() + '%'" />
+        <!--<bind name="remarkCon" value="'%' + _parameter.getRemark() + '%'" />-->
+
+        SELECT sum(cast(r.rec_sum as decimal(18,2))) as rec_sum
+        from account_receipts r
+        <where>
+            <if test="fkReceiptsTypeId!=null">
+                and r.fk_receipts_type_id = #{fkReceiptsTypeId}
+            </if>
+            <if test="idList!=null">
+                and r.fk_receipts_type_id in
+                <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="recSumStart!=null">
+                and r.rec_sum &gt;= #{recSumStart}
+            </if>
+            <if test="recSumEnd!=null">
+                and r.rec_sum &lt;= #{recSumEnd}
+            </if>
+            <if test="recDateStart!=null">
+                and r.rec_date &gt;= #{recDateStart}
+            </if>
+            <if test="recDateEnd!=null">
+                and r.rec_date &lt;= #{recDateEnd}
+            </if>
+            <if test="fkUserId!=null">
+                and r.fk_user_id = #{fkUserId}
+            </if>
+            <if test="fkComEventId!=null">
+                and r.fk_com_event_id = #{fkComEventId}
+            </if>
+            <if test="fkComPersonId!=null">
+                and r.fk_com_person_id = #{fkComPersonId}
+            </if>
+            <!--<if test="remark!=null and remark!='' ">
+                and r.remark like #{remarkCon}
+            </if>-->
+        </where>
+    </select>
 
   <select id="queryStatisticsReceiptsData" parameterType="com.tgw.account.receipts.model.Receipts"  resultType="map">
 SELECT t1.f_date,t1.t_id,rt.receipts_type_name, t1.sta_sum from (

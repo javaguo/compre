@@ -16,6 +16,7 @@ import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -77,9 +78,7 @@ public class ExpendMobileController extends BaseController<Expend> {
             bean.setIdList( PlatformUtils.stringToList( bean.getTypeIds(),"," ) );
         }
 
-        if( !PlatformUserUtils.isContainRoleByCode( PlatformSysConstant.SYS_ROLE_CODE_SUPER_ADMIN ) ){//非超级管理员角色,只查询当前用户的数据
-            bean.setFkUserId( PlatformUserUtils.getLoginUserInfo().getId() );
-        }
+        bean.setFkUserId( PlatformUserUtils.getLoginUserInfo().getId() );
     }
 
     @Override
@@ -128,6 +127,20 @@ public class ExpendMobileController extends BaseController<Expend> {
     public void beforeMenuAjaxUpdateBean(HttpServletRequest request, HttpServletResponse response, Object bean  ) throws PlatformException{
         Expend tempBean = (Expend)bean;
         tempBean.setUpdateTime( new Date() );
+    }
+
+    @RequestMapping("/statisticSum.do")
+    public ModelAndView statisticSum(HttpServletRequest request, HttpServletResponse response,Expend expend){
+        ModelAndView modelAndView = new ModelAndView(this.getJsonView());
+        JSONObject jo = JSONObject.fromObject("{}");
+
+        expend.setFkUserId( PlatformUserUtils.getLoginUserInfo().getId() );
+        Double sum = this.getExpendService().statisticSum(expend);
+        jo.put("success",true);
+        jo.put("statisticSum",sum==null?"":sum.toString());
+
+        modelAndView.addObject( PlatformSysConstant.JSONSTR, jo.toString() );
+        return  modelAndView;
     }
 
     @Override

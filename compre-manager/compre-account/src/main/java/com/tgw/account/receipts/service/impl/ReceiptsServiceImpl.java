@@ -40,6 +40,10 @@ public class ReceiptsServiceImpl extends BaseServiceImpl implements ReceiptsServ
         return getReceiptsMapper().queryStatisticsReceiptsData( receipts );
     }
 
+    public Double statisticSum(Receipts receipts) {
+        return getReceiptsMapper().statisticSum(receipts);
+    }
+
     public void checkReceiptsBeforSaveOrUpdate(Receipts receipts) throws PlatformException {
         ReceiptsType receiptsType = new ReceiptsType();
         receiptsType.setId( receipts.getFkReceiptsTypeId() );

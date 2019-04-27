@@ -18,6 +18,13 @@ public interface ExpendService extends BaseService {
     List<Map<String,Object>> queryStatisticsExpendData(Expend expend );
 
     /**
+     * 根据条件求总和
+     * @param expend
+     * @return
+     */
+    Double statisticSum(Expend expend);
+
+    /**
      * 保存更新支出数据时进行校验
      * @param expend
      * @throws PlatformException

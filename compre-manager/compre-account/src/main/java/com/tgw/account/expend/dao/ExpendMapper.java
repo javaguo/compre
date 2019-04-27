@@ -13,4 +13,11 @@ public interface ExpendMapper extends BaseModelMapper<Expend> {
      * @return
      */
     List<Map<String,Object>> queryStatisticsExpendData(Expend expend );
+
+    /**
+     * 根据条件求总和
+     * @param expend
+     * @return
+     */
+    Double statisticSum(Expend expend);
 }
