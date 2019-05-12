@@ -17,7 +17,9 @@
 
   <select id="searchData" parameterType="com.tgw.account.receiptsType.model.ReceiptsType"  resultType="map">
     <bind name="userNameCon" value="'%' + _parameter.getUserName() + '%'" />
-    <bind name="receiptsTypeNameCon" value="'%' + _parameter.getReceiptsTypeName() + '%'" />
+    <if test="receiptsTypeName!=null and receiptsTypeName!=''">
+      <bind name="receiptsTypeNameCon" value="'%' + _parameter.getReceiptsTypeName() + '%'" />
+    </if>
 
     SELECT
     receipt.id,
@@ -76,6 +78,14 @@
         order by CONVERT( u.user_name USING gbk ) asc,CONVERT( CONCAT_WS('',receipt_p.order_num,receipt.order_num) USING gbk) asc
       </otherwise>
     </choose>-->
+  </select>
+
+  <select id="countByOrderNum"  resultType="int">
+    SELECT count(0)
+    from account_receipts_type
+    where order_num = #{orderNum}
+    and fk_parent_id = #{fkParentId}
+    and fk_user_id = #{fkUserId}
   </select>
 
   <select id="queryChildRecord"  resultType="int">

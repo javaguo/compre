@@ -17,7 +17,9 @@
 
   <select id="searchData" parameterType="com.tgw.account.expendType.model.ExpendType"  resultType="map">
     <bind name="userNameCon" value="'%' + _parameter.getUserName() + '%'" />
-    <bind name="expendTypeNameCon" value="'%' + _parameter.getExpendTypeName() + '%'" />
+    <if test="expendTypeName!=null and expendTypeName!=''">
+      <bind name="expendTypeNameCon" value="'%' + _parameter.getExpendTypeName() + '%'" />
+    </if>
 
     select expend.id,
     expend_p.expend_type_name fkParentId,
@@ -60,6 +62,14 @@
         tree.fk_user_id = #{fkUserId}
     </where>
     order by CONVERT( CONCAT_WS('',LPAD(expend_p.order_num,8,'0'),LPAD(tree.order_num,8,'0')) USING gbk) asc
+  </select>
+
+  <select id="countByOrderNum"  resultType="int">
+    SELECT count(0)
+    from account_expend_type
+    where order_num = #{orderNum}
+    and fk_parent_id = #{fkParentId}
+    and fk_user_id = #{fkUserId}
   </select>
 
   <select id="queryChildRecord"  resultType="int">

@@ -124,40 +124,13 @@ public class ExpendTypeController extends BaseController<ExpendType> {
 
     @Override
     public void beforeSaveBean(HttpServletRequest request, HttpServletResponse response, ExpendType bean) throws PlatformException{
-        bean.setFkUserId( PlatformUserUtils.getLoginUserInfo().getId() );
-        if( bean.getFkParentId()==null ){
-            bean.setFkParentId(-1);
-        }else{
-            ExpendType type_p = new ExpendType();
-            type_p.setId( bean.getFkParentId() );
-            type_p = (ExpendType)this.getExpendTypeService().selectUniqueBeanByPrimaryKey( type_p );
-            if( type_p.getFkParentId()!=-1 ){
-                throw new PlatformException("支出类型只支持二级结构，请选择一级节点作为父类型！");
-            }
-        }
-
-        bean.setIsSysOwn(0);
-
-        Date date = new Date();
-        bean.setAddTime( date );
-        bean.setUpdateTime( date );
+        this.getExpendTypeService().beforeSaveBean(bean);
     }
 
     @Override
     public void beforeUpdateBean(HttpServletRequest request, HttpServletResponse response,Object bean  ) throws PlatformException{
         ExpendType tempBean = (ExpendType)bean;
-
-        if( tempBean.getFkParentId()==null ){
-            tempBean.setFkParentId(-1);
-        }else{
-            ExpendType type_p = new ExpendType();
-            type_p.setId( tempBean.getFkParentId() );
-            type_p = (ExpendType)this.getExpendTypeService().selectUniqueBeanByPrimaryKey( type_p );
-            if( type_p.getFkParentId()!=-1 ){
-                throw new PlatformException("支出类型只支持二级结构，请选择一级节点作为父类型！");
-            }
-        }
-        tempBean.setUpdateTime( new Date() );
+        this.getExpendTypeService().beforeUpdateBean(tempBean);
     }
 
     @Override

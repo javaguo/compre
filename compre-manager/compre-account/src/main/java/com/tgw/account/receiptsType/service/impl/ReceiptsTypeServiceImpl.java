@@ -95,6 +95,26 @@ public class ReceiptsTypeServiceImpl extends BaseServiceImpl implements Receipts
         }
     }
 
+    public void beforeSaveBean(ReceiptsType bean) throws PlatformException {
+        bean.setFkUserId( PlatformUserUtils.getLoginUserInfo().getId() );
+        bean.setIsSysOwn(0);
+
+        Date date = new Date();
+        bean.setAddTime( date );
+        bean.setUpdateTime( date );
+
+        this.checkType(bean);
+        this.checkOrderNum(bean,0);
+    }
+
+    public void beforeUpdateBean(ReceiptsType bean) throws PlatformException {
+        this.checkType(bean);
+        bean.setUpdateTime( new Date() );
+
+        this.checkOrderNum(bean,1);
+    }
+
+
     public void checkBeforeDelete(List<String> idList) {
         if( getReceiptsTypeMapper().queryChildRecord( idList,PlatformUserUtils.getLoginUserInfo().getId() )>0 ){
             throw new PlatformException( "要删除的类型中有子收入类型，请先删除子收入类型！" );
@@ -104,6 +124,39 @@ public class ReceiptsTypeServiceImpl extends BaseServiceImpl implements Receipts
             throw new PlatformException( "收入记录中已使用了要删除的收入类型，无法删除！若确定要删除收入类型，请先删除相应的收入记录！" );
         }
     }
+
+    private void checkType(ReceiptsType bean)throws PlatformException{
+        if( bean.getFkParentId()==null ){
+            bean.setFkParentId(-1);
+        }else{
+            ReceiptsType type_p = new ReceiptsType();
+            type_p.setId( bean.getFkParentId() );
+            type_p = (ReceiptsType)this.selectUniqueBeanByPrimaryKey( type_p );
+            if( type_p.getFkParentId()!=-1 ){
+                throw new PlatformException("收入类型只支持二级结构，请选择一级节点作为父类型！");
+            }
+        }
+    }
+
+    private void checkOrderNum(ReceiptsType bean,int countMaxVal )throws PlatformException{
+        if (bean.getFkParentId()==null){
+            throw new PlatformException("父类型不能为空！");
+        }
+        if (bean.getOrderNum()==null){
+            throw new PlatformException("序号不能为空！");
+        }
+
+        int count = this.getReceiptsTypeMapper().countByOrderNum(bean.getFkUserId(),bean.getFkParentId(),bean.getOrderNum());
+        if (count>countMaxVal){
+            if (bean.getFkParentId()==-1){
+                throw new PlatformException("序号不能重复！一级类型中已存在相同序号！");
+            }else{
+                throw new PlatformException("序号不能重复！所属类型下已存在相同序号！");
+            }
+        }
+
+    }
+
 
     public List<ReceiptsType> queryStatisticsReceiptsType(Receipts bean) {
         return getReceiptsTypeMapper().queryStatisticsReceiptsType( bean.getFkUserId(),bean.getIdList() );

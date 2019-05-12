@@ -114,39 +114,13 @@ public class ReceiptsTypeController extends BaseController<ReceiptsType> {
 
     @Override
     public void beforeSaveBean(HttpServletRequest request, HttpServletResponse response, ReceiptsType bean) throws PlatformException{
-        bean.setFkUserId( PlatformUserUtils.getLoginUserInfo().getId() );
-        if( bean.getFkParentId()==null ){
-            bean.setFkParentId(-1);
-        }else{
-            ReceiptsType type_p = new ReceiptsType();
-            type_p.setId( bean.getFkParentId() );
-            type_p = (ReceiptsType)this.getReceiptsTypeService().selectUniqueBeanByPrimaryKey( type_p );
-            if( type_p.getFkParentId()!=-1 ){
-                throw new PlatformException("收入类型只支持二级结构，请选择一级节点作为父类型！");
-            }
-        }
-        bean.setIsSysOwn(0);
-
-        Date date = new Date();
-        bean.setAddTime( date );
-        bean.setUpdateTime( date );
+        this.getReceiptsTypeService().beforeSaveBean(bean);
     }
 
     @Override
     public void beforeUpdateBean(HttpServletRequest request, HttpServletResponse response,Object bean  ) throws PlatformException{
         ReceiptsType tempBean = (ReceiptsType)bean;
-        if( tempBean.getFkParentId()==null ){
-            tempBean.setFkParentId(-1);
-        }else{
-            ReceiptsType type_p = new ReceiptsType();
-            type_p.setId( tempBean.getFkParentId() );
-            type_p = (ReceiptsType)this.getReceiptsTypeService().selectUniqueBeanByPrimaryKey( type_p );
-            if( type_p.getFkParentId()!=-1 ){
-                throw new PlatformException("收入类型只支持二级结构，请选择一级节点作为父类型！");
-            }
-        }
-
-        tempBean.setUpdateTime( new Date() );
+        this.getReceiptsTypeService().beforeUpdateBean(tempBean);
     }
 
     @Override

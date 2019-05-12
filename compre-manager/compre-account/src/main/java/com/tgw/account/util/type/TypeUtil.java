@@ -12,12 +12,17 @@ import java.util.Map;
  */
 public class TypeUtil {
 
+    /**
+     * 移除没有子节点的节点
+     * @param typeList
+     * @return
+     */
     public static List<Map<String,Object>> removeNoChildNode(List<Map<String,Object>> typeList){
         if (CollectionUtils.isEmpty(typeList)){
             return typeList;
         }
         String rootVal = "-1";
-        List<String> firstLevelIdList = new ArrayList<String>();// 第一层结点的id值
+        List<String> firstLevelIdList = new ArrayList<String>();// 有子节点的第一层结点id集合
         for (Map<String,Object> map:typeList){
             if (map.get("fk_parent_id")!=null && !rootVal.equals(map.get("fk_parent_id").toString())){// fk_parent_id不是-1，那么此节点就是第二层节点
                 firstLevelIdList.add(map.get("fk_parent_id").toString());// 把第二层节点的fk_parent_id取出来就是第一层结点的id值
@@ -35,6 +40,27 @@ public class TypeUtil {
                     && rootVal.equals(map.get("fk_parent_id").toString())
                     && !firstLevelIdList.contains(map.get("id").toString())){
                 ite.remove();
+            }
+        }
+        return typeList;
+    }
+
+    /**
+     * 移除每个一级节点的子节点
+     * @param typeList
+     * @return
+     */
+    public static List<Map<String,Object>> removeChildLevel1(List<Map<String,Object>> typeList){
+        if (CollectionUtils.isEmpty(typeList)){
+            return typeList;
+        }
+        String rootVal = "-1";
+
+        Iterator<Map<String,Object>> ite = typeList.iterator();
+        while (ite.hasNext()){
+            Map<String,Object> map = ite.next();
+            if (map.get("fk_parent_id")!=null && !rootVal.equals(map.get("fk_parent_id").toString())){// fk_parent_id不是-1，那么此节点就是第二层节点
+                ite.remove();// 把第二级层节点都移除掉
             }
         }
         return typeList;

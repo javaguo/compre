@@ -14,14 +14,24 @@ public interface ReceiptsTypeMapper extends BaseModelMapper<ReceiptsType> {
      * @return
      * @throws PlatformException
      */
-    public abstract List<Map<String,Object>> queryReceiptsTypeMap(@Param("fkUserId")String fkUserId)  throws PlatformException;
+    List<Map<String,Object>> queryReceiptsTypeMap(@Param("fkUserId")String fkUserId)  throws PlatformException;
+
+
+    /**
+     * 统计某个用户某个类型节点的相同序号的数量
+     * @param fkUserId
+     * @param fkParentId
+     * @param orderNum
+     * @return
+     */
+    int countByOrderNum( @Param("fkUserId")int fkUserId,@Param("fkParentId")int fkParentId,@Param("orderNum")int orderNum );
 
     /**
      * 查询子收入类型数量
      * @param idList
      * @return
      */
-    public abstract int queryChildRecord(  @Param("idList") List<String> idList ,@Param("fkUserId")int fkUserId );
+    int queryChildRecord(  @Param("idList") List<String> idList ,@Param("fkUserId")int fkUserId );
 
     /**
      * 查询支出记录是否有指定收入类型的记录
@@ -29,7 +39,7 @@ public interface ReceiptsTypeMapper extends BaseModelMapper<ReceiptsType> {
      * @param fkUserId
      * @return
      */
-    public abstract int queryReceiptsRecord(  @Param("idList") List<String> idList ,@Param("fkUserId")int fkUserId );
+    int queryReceiptsRecord(  @Param("idList") List<String> idList ,@Param("fkUserId")int fkUserId );
 
     /**
      * 查询要统计的收入类型

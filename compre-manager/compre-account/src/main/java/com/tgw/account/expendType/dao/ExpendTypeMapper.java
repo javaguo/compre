@@ -14,14 +14,23 @@ public interface ExpendTypeMapper extends BaseModelMapper<ExpendType> {
      * @return
      * @throws PlatformException
      */
-    public abstract List<Map<String,Object>> queryExpendTypeTreeMap(@Param("fkUserId")String fkUserId)  throws PlatformException;
+    List<Map<String,Object>> queryExpendTypeTreeMap(@Param("fkUserId")String fkUserId)  throws PlatformException;
+
+    /**
+     * 统计某个用户某个类型节点的相同序号的数量
+     * @param fkUserId
+     * @param fkParentId
+     * @param orderNum
+     * @return
+     */
+    int countByOrderNum( @Param("fkUserId")int fkUserId,@Param("fkParentId")int fkParentId,@Param("orderNum")int orderNum );
 
     /**
      * 查询子支出类型数量
      * @param idList
      * @return
      */
-    public abstract int queryChildRecord(  @Param("idList") List<String> idList ,@Param("fkUserId")int fkUserId );
+    int queryChildRecord(  @Param("idList") List<String> idList ,@Param("fkUserId")int fkUserId );
 
     /**
      * 查询支出记录是否有指定支出类型的记录
@@ -29,7 +38,7 @@ public interface ExpendTypeMapper extends BaseModelMapper<ExpendType> {
      * @param fkUserId
      * @return
      */
-    public abstract int queryExpendRecord(  @Param("idList") List<String> idList ,@Param("fkUserId")int fkUserId );
+    int queryExpendRecord(  @Param("idList") List<String> idList ,@Param("fkUserId")int fkUserId );
 
     /**
      * 查询要统计的支出类型

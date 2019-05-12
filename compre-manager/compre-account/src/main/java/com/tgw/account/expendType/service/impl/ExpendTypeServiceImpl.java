@@ -91,6 +91,25 @@ public class ExpendTypeServiceImpl extends BaseServiceImpl implements ExpendType
         }
     }
 
+    public void beforeSaveBean(ExpendType bean) throws PlatformException {
+        bean.setFkUserId( PlatformUserUtils.getLoginUserInfo().getId() );
+        bean.setIsSysOwn(0);
+
+        Date date = new Date();
+        bean.setAddTime( date );
+        bean.setUpdateTime( date );
+
+        this.checkType(bean);
+        this.checkOrderNum(bean,0);
+    }
+
+    public void beforeUpdateBean(ExpendType bean) throws PlatformException {
+        this.checkType(bean);
+        bean.setUpdateTime( new Date() );
+
+        this.checkOrderNum(bean,1);
+    }
+
     public void checkBeforeDelete(List<String> idList) {
         if( getExpendTypeMapper().queryChildRecord( idList,PlatformUserUtils.getLoginUserInfo().getId() )>0 ){
             throw new PlatformException( "要删除的类型中有子支出类型，请先删除子支出类型！" );
@@ -103,6 +122,38 @@ public class ExpendTypeServiceImpl extends BaseServiceImpl implements ExpendType
 
     public List<ExpendType> queryStatisticsExpendType(Expend bean) {
         return getExpendTypeMapper().queryStatisticsExpendType( bean.getFkUserId(),bean.getIdList() );
+    }
+
+    private void checkType(ExpendType bean)throws PlatformException{
+        if( bean.getFkParentId()==null ){
+            bean.setFkParentId(-1);
+        }else{
+            ExpendType type_p = new ExpendType();
+            type_p.setId( bean.getFkParentId() );
+            type_p = (ExpendType)this.selectUniqueBeanByPrimaryKey( type_p );
+            if( type_p.getFkParentId()!=-1 ){
+                throw new PlatformException("支出类型只支持二级结构，请选择一级节点作为父类型！");
+            }
+        }
+    }
+
+    private void checkOrderNum(ExpendType bean,int countMaxVal)throws PlatformException{
+        if (bean.getFkParentId()==null){
+            throw new PlatformException("父类型不能为空！");
+        }
+        if (bean.getOrderNum()==null){
+            throw new PlatformException("序号不能为空！");
+        }
+
+        int count = this.getExpendTypeMapper().countByOrderNum(bean.getFkUserId(),bean.getFkParentId(),bean.getOrderNum());
+        if (count>countMaxVal){
+            if (bean.getFkParentId()==-1){
+                throw new PlatformException("序号不能重复！一级类型中已存在相同序号！");
+            }else{
+                throw new PlatformException("序号不能重复！所属类型下已存在相同序号！");
+            }
+        }
+
     }
 
     public ExpendTypeMapper getExpendTypeMapper() {
