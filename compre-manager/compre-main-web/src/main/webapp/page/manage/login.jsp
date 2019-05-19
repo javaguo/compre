@@ -26,7 +26,22 @@
 			setContextPath('<%=basePath%>');
 		</script>
 		<style>
-
+			.downloadAppCon{
+				position: absolute;
+				top:150px;
+				left: 800px;
+				width: 180px;
+				height: 180px;
+				margin: 20px 20px 20px 20px;
+			}
+			.downloadAppImg{
+				width: 100%;
+				height: 100%;
+			}
+			.downloadAppTip{
+				font-size: 14px;
+				text-align: center;
+			}
 		</style>
 	</head>
 	<body>
@@ -49,6 +64,12 @@
 						</a>
 					</div>
 				</form>
+			</div>
+			<div class="downloadAppCon">
+				<img class="downloadAppImg" src="resource/img/platform/manage/login/downloadApp.png"/>
+				<div class="downloadAppTip">
+					下载注册APP（安卓）
+				</div>
 			</div>
 		</div>
 		<div style="width: 420px;height:80px;float:right;">
