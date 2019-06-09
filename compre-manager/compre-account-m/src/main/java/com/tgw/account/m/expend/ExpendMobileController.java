@@ -9,10 +9,13 @@ import com.tgw.basic.common.utils.PlatformUtils;
 import com.tgw.basic.common.utils.config.PlatformSysConstant;
 import com.tgw.basic.framework.controller.BaseController;
 import com.tgw.basic.framework.model.controller.SysEnController;
+import com.tgw.basic.system.constant.model.SysEnConstant;
+import com.tgw.basic.system.constant.service.SysEnConstantService;
 import com.tgw.basic.system.user.utils.PlatformUserUtils;
 import com.tgw.omnipotent.comEvent.service.ComEventService;
 import com.tgw.omnipotent.comPerson.service.ComPersonService;
 import net.sf.json.JSONObject;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +25,9 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +43,8 @@ public class ExpendMobileController extends BaseController<Expend> {
     private ComPersonService comPersonService;
     @Resource
     private ExpendTypeService expendTypeService;
+    @Resource
+    private SysEnConstantService sysEnConstantService;
 
     @PostConstruct
     public void initExpendMobile(){
@@ -62,6 +69,7 @@ public class ExpendMobileController extends BaseController<Expend> {
         controller.addFieldDate("expDate","支出日期",true,true,true,true,false,null);
         controller.addFieldComboBoxTree( "expendParentTypeName","父类型",true,false,false,false,true,null,null );
         controller.addFieldComboBoxTree( "fkExpendTypeId","支出类型",true,true,true,false,false,null,null );
+        controller.addFieldComboBoxBySQL("fkExpendWayId","支出方式",true,true,true,false,true,"expendWay",null,null);
         controller.addFieldNumber("expSum","支出金额",true,true,true,true,false,null);
         controller.addFieldTextArea("remark","备注",true,true,true,false,true,null);
         controller.addFieldComboBoxBySQL("fkComEventId","相关事件",true,true,true,false,true,"loadComEvent",null,null);
@@ -121,6 +129,14 @@ public class ExpendMobileController extends BaseController<Expend> {
         } catch (PlatformException e) {
             e.printStackTrace();
         }
+
+        if (bean.getFkExpendWayId()!=null){
+            SysEnConstant con = new SysEnConstant();
+            con.setId( bean.getFkExpendWayId() );
+            con = (SysEnConstant)this.getSysEnConstantService().selectUniqueBeanByPrimaryKey(con);
+            jo.put("expendWayName",con.getName());
+        }
+
     }
 
     @Override
@@ -157,6 +173,18 @@ public class ExpendMobileController extends BaseController<Expend> {
             res = this.getComEventService().loadComEventComboBoxMap();
         }else if( "loadComPerson".equals( comboBoxFlag ) ){
             res = this.getComPersonService().loadComPersonComboBoxMap();
+        } else  if( "expendWay".equals( comboBoxFlag ) ){
+            res = this.getSysEnConstantService().loadConstantByNamespace("expendWay");
+            List<Map<String,Object>> convertResult = new ArrayList<Map<String, Object>>(res.size());
+            if (CollectionUtils.isNotEmpty(res)){
+                for (Map<String,Object> map : res){
+                    Map<String,Object> convertMap = new HashMap<String,Object>(2);
+                    convertMap.put( "value",map.get("id") );
+                    convertMap.put( "label",map.get("name") );
+                    convertResult.add(convertMap);
+                }
+            }
+            res = convertResult;
         }
 
         return res;
@@ -185,5 +213,21 @@ public class ExpendMobileController extends BaseController<Expend> {
 
     public void setComPersonService(ComPersonService comPersonService) {
         this.comPersonService = comPersonService;
+    }
+
+    public ExpendTypeService getExpendTypeService() {
+        return expendTypeService;
+    }
+
+    public void setExpendTypeService(ExpendTypeService expendTypeService) {
+        this.expendTypeService = expendTypeService;
+    }
+
+    public SysEnConstantService getSysEnConstantService() {
+        return sysEnConstantService;
+    }
+
+    public void setSysEnConstantService(SysEnConstantService sysEnConstantService) {
+        this.sysEnConstantService = sysEnConstantService;
     }
 }

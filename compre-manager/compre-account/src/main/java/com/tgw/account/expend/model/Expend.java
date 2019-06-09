@@ -3,7 +3,11 @@ package com.tgw.account.expend.model;
 import com.tgw.basic.core.model.AbstractBaseBean;
 import org.apache.commons.lang.StringUtils;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.Date;
 import java.util.List;
 
@@ -37,6 +41,9 @@ public class Expend extends AbstractBaseBean {
 
     @Column(name = "fk_expend_type_id")
     private Integer fkExpendTypeId;
+
+    @Column(name = "fk_expend_way_id")
+    private Integer fkExpendWayId;
 
     @Column(name = "fk_user_id")
     private Integer fkUserId;
@@ -186,6 +193,14 @@ public class Expend extends AbstractBaseBean {
      */
     public void setFkExpendTypeId(Integer fkExpendTypeId) {
         this.fkExpendTypeId = fkExpendTypeId;
+    }
+
+    public Integer getFkExpendWayId() {
+        return fkExpendWayId;
+    }
+
+    public void setFkExpendWayId(Integer fkExpendWayId) {
+        this.fkExpendWayId = fkExpendWayId;
     }
 
     /**

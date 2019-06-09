@@ -8,6 +8,7 @@ import com.tgw.basic.common.utils.config.PlatformSysConstant;
 import com.tgw.basic.framework.controller.BaseController;
 import com.tgw.basic.framework.model.controller.SysEnController;
 import com.tgw.basic.framework.model.controller.SysEnControllerField;
+import com.tgw.basic.system.constant.service.SysEnConstantService;
 import com.tgw.basic.system.user.utils.PlatformUserUtils;
 import com.tgw.omnipotent.comEvent.service.ComEventService;
 import com.tgw.omnipotent.comPerson.service.ComPersonService;
@@ -35,6 +36,8 @@ public class ExpendController extends BaseController<Expend> {
     private ComEventService comEventService;
     @Resource
     private ComPersonService comPersonService;
+    @Resource
+    private SysEnConstantService sysEnConstantService;
 
     @PostConstruct
     public void initExpendMobile(){
@@ -77,6 +80,7 @@ public class ExpendController extends BaseController<Expend> {
         String expendTypeTreeUrl = "expendType/loadTreeData.do?fieldMap=id:id,text:expend_type_name,parentId:fk_parent_id&treeRootVal=-1&treeFlag=expendType&resType=map&multiSelect=false";
         String expendTypeSearConfigs = "emptyText:'请选择支出类型',multiSelect:true,multiCascade:false";
         String expendTypeTreeSearUrl = "expendType/loadTreeData.do?fieldMap=id:id,text:expend_type_name,parentId:fk_parent_id&treeRootVal=-1&treeFlag=expendType&resType=map&multiSelect=true";
+        String fkExpendWayConfigs = "listConfig:{emptyText:'支出方式'}";
         String expSumConfigs = "emptyText:'支出金额',maxValue:99999999.9,maxText:'最大为999,999,99.9',minValue:0.1,minText:'最小为0.1',step:100";
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String expDateConfigs = "emptyText:'支出日期',editable:false,minValue:'1900-01-01',minText:'最小为1900-01-01',value:'"+ sdf.format( new Date() )+"'";
@@ -96,6 +100,7 @@ public class ExpendController extends BaseController<Expend> {
         SysEnControllerField expSum = controller.addFieldNumber("expSum","支出金额",true,true,true,true,false,expSumConfigs);
         expSum.setSearByRange( true );
         controller.addFieldTextArea("remark","备注",true,true,true,false,true,remarkConfigs);
+        controller.addFieldComboBoxBySQL("fkExpendWayId","支出方式",true,true,true,true,true,"expendWay",null,fkExpendWayConfigs);
         controller.addFieldComboBoxBySQL("fkComEventId","相关事件",true,true,true,!superAdminFlag,true,"loadComEvent",null,fkComEventIdConfigs);
         controller.addFieldComboBoxBySQL("fkComPersonId","相关人员",true,true,true,!superAdminFlag,true,"loadComPerson",null,fkComPersonConfigs);
         if( PlatformUserUtils.isContainRoleByCode( PlatformSysConstant.SYS_ROLE_CODE_SUPER_ADMIN ) ){//是超级管理员角色
@@ -166,6 +171,8 @@ public class ExpendController extends BaseController<Expend> {
             res = this.getComEventService().loadComEventComboBoxMap();
         }else if( "loadComPerson".equals( comboBoxFlag ) ){
             res = this.getComPersonService().loadComPersonComboBoxMap();
+        } else  if( "expendWay".equals( comboBoxFlag ) ){
+            res = this.getSysEnConstantService().loadConstantByNamespace("expendWay");
         }
 
         return res;
@@ -211,5 +218,13 @@ public class ExpendController extends BaseController<Expend> {
 
     public void setComPersonService(ComPersonService comPersonService) {
         this.comPersonService = comPersonService;
+    }
+
+    public SysEnConstantService getSysEnConstantService() {
+        return sysEnConstantService;
+    }
+
+    public void setSysEnConstantService(SysEnConstantService sysEnConstantService) {
+        this.sysEnConstantService = sysEnConstantService;
     }
 }

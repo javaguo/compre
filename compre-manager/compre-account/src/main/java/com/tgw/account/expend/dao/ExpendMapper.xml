@@ -12,6 +12,7 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="fk_expend_type_id" jdbcType="INTEGER" property="fkExpendTypeId" />
+    <result column="fk_expend_way" jdbcType="INTEGER" property="fkExpendWay" />
     <result column="fk_user_id" jdbcType="INTEGER" property="fkUserId" />
     <result column="fk_com_event_id" jdbcType="INTEGER" property="fkComEventId" />
     <result column="fk_com_person_id" jdbcType="INTEGER" property="fkComPersonId" />
@@ -27,6 +28,7 @@
     SELECT e.id,
     et_p.expend_type_name expendParentTypeName,
     et.expend_type_name fkExpendTypeId,
+    ec.name fkExpendWayId,
     e.exp_sum expSum,
     date_format(e.exp_date, '%Y-%m-%d') expDate,
     e.remark remark,
@@ -42,6 +44,7 @@
     LEFT JOIN sys_en_user u on e.fk_user_id = u.id
     left join com_event ce on e.fk_com_event_id = ce.id
     left join com_person cp on e.fk_com_person_id = cp.id
+    left join sys_en_constant ec on e.fk_expend_way_id = ec.id
     <where>
       <if test="fkExpendTypeId!=null">
         and e.fk_expend_type_id = #{fkExpendTypeId}
@@ -51,6 +54,9 @@
         <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
           #{item}
         </foreach>
+      </if>
+      <if test="fkExpendWayId!=null">
+         and e.fk_expend_way_id = #{fkExpendWayId}
       </if>
       <if test="expSumStart!=null">
         and e.exp_sum &gt;= #{expSumStart}

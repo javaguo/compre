@@ -178,10 +178,6 @@ public class ExpendTypeController extends BaseController<ExpendType> {
         String comboBoxFlag = request.getParameter("comboBoxFlag");
         List<Map<String,Object>> res = null;
 
-        /**if( "loadDistrict".equals( comboBoxFlag ) ){
-            res = this.getExpendTypeService().queryDistrictComboBoxMap( parentId );
-        }*/
-
         return res;
     }
 
@@ -210,4 +206,5 @@ public class ExpendTypeController extends BaseController<ExpendType> {
     public void setExpendTypeService(ExpendTypeService expendTypeService) {
         this.expendTypeService = expendTypeService;
     }
+
 }

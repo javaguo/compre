@@ -128,6 +128,9 @@ public class LendController extends BaseController<Lend> {
     @Override
     public void beforeSaveBean(HttpServletRequest request, HttpServletResponse response, Lend bean) throws PlatformException{
         bean.setFkUserId( PlatformUserUtils.getLoginUserInfo().getId() );
+        if (bean.getHasRefundedData()==null){
+            bean.setHasRefundedData(0d);
+        }
         Date date = new Date();
         bean.setAddTime( date );
         bean.setUpdateTime( date );
@@ -136,6 +139,9 @@ public class LendController extends BaseController<Lend> {
     @Override
     public void beforeUpdateBean(HttpServletRequest request, HttpServletResponse response,Object bean  ) throws PlatformException{
         Lend tempBean = (Lend)bean;
+        if (tempBean.getHasRefundedData()==null){
+            tempBean.setHasRefundedData(0d);
+        }
         tempBean.setUpdateTime( new Date() );
     }
 
