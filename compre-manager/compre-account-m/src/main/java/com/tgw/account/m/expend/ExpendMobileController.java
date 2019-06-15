@@ -150,6 +150,9 @@ public class ExpendMobileController extends BaseController<Expend> {
         ModelAndView modelAndView = new ModelAndView(this.getJsonView());
         JSONObject jo = JSONObject.fromObject("{}");
 
+        if(StringUtils.isNotBlank( expend.getTypeIds() )){
+            expend.setIdList( PlatformUtils.stringToList( expend.getTypeIds(),"," ) );
+        }
         expend.setFkUserId( PlatformUserUtils.getLoginUserInfo().getId() );
         Double sum = this.getExpendService().statisticSum(expend);
         jo.put("success",true);

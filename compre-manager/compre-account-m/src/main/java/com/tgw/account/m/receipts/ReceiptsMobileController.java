@@ -140,6 +140,9 @@ public class ReceiptsMobileController extends BaseController<Receipts> {
         ModelAndView modelAndView = new ModelAndView(this.getJsonView());
         JSONObject jo = JSONObject.fromObject("{}");
 
+        if(StringUtils.isNotBlank( receipts.getTypeIds() )){
+            receipts.setIdList( PlatformUtils.stringToList( receipts.getTypeIds(),"," ) );
+        }
         receipts.setFkUserId( PlatformUserUtils.getLoginUserInfo().getId() );
         Double sum = this.getReceiptsService().statisticSum(receipts);
         jo.put("success",true);
