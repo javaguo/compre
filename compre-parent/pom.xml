@@ -7,9 +7,12 @@
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-<!--  <modules>
-    <module>../compre-manager</module>
-  </modules>-->
+  <modules>
+    <module>../compre-omnipotent</module>
+    <module>../compre-account</module>
+    <module>../compre-account-m</module>
+    <module>../compre-main-web</module>
+  </modules>
 
   <name>compre-parent</name>
   <url>http://maven.apache.org</url>
@@ -33,12 +36,52 @@
 
   <dependencies>
     <dependency>
+      <groupId>portlet-api</groupId>
+      <artifactId>portlet-api</artifactId>
+      <version>1.0</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>3.1.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/javax.servlet.jsp/javax.servlet.jsp-api-->
+    <dependency>
+      <groupId>javax.servlet.jsp</groupId>
+      <artifactId>javax.servlet.jsp-api</artifactId>
+      <version>2.3.1</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <profiles>
+    <profile>
+      <id>jetspeed</id>
+      <build>
+        <plugins>
+          <!--<plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-war-plugin</artifactId>
+              <version>2.0-beta-2</version>
+              <configuration>
+                  <webXml>src/main/jetspeed/web.xml</webXml>
+              </configuration>
+          </plugin>-->
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
   <!-- 项目构建配置 -->
   <build>
