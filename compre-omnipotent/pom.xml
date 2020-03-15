@@ -3,38 +3,16 @@
     <parent>
         <artifactId>compre-parent</artifactId>
         <groupId>com.tgw.compre</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
+
     <modelVersion>4.0.0</modelVersion>
+    <name>compre-omnipotent</name>
 
     <artifactId>compre-omnipotent</artifactId>
     <version>${project-version}</version>
     <packaging>jar</packaging>
 
-    <name>compre-omnipotent</name>
-    <url>http://maven.apache.org</url>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
     <dependencies>
-        <dependency>
-            <groupId>com.tgw.basic</groupId>
-            <artifactId>basic-framework-web</artifactId>
-            <version>${basic-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.tgw.basic</groupId>
-            <artifactId>basic-system-user-service</artifactId>
-            <version>${basic-version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>3.8.1</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 </project>

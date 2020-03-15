@@ -1,158 +1,97 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>compre-root</artifactId>
+    <groupId>com.tgw.compre</groupId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+
   <modelVersion>4.0.0</modelVersion>
+  <name>compre-parent</name>
 
   <groupId>com.tgw.compre</groupId>
   <artifactId>compre-parent</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>${project-version}</version>
   <packaging>pom</packaging>
 
-  <modules>
-    <module>../compre-omnipotent</module>
-    <module>../compre-account</module>
-    <module>../compre-account-m</module>
-    <module>../compre-main-web</module>
-  </modules>
-
-  <name>compre-parent</name>
-  <url>http://maven.apache.org</url>
-
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
-    <!--<sysmanage-version>1.0.0-RELEASE</sysmanage-version>
-    <framework-version>1.0.0-RELEASE</framework-version>
-    <project-version>1.0.0-RELEASE</project-version>-->
-    <sysmanage-version>1.0.0-SNAPSHOT</sysmanage-version>
-    <basic-version>1.0.0-SNAPSHOT</basic-version>
-    <project-version>1.0.0-SNAPSHOT</project-version>
-    <account-version>1.0.0-SNAPSHOT</account-version>
-
-    <!-- JavaEE相关 -->
-    <servlet-api-version>2.5</servlet-api-version>
-    <jsp-api-version>2.1</jsp-api-version>
-  </properties>
-
   <dependencies>
+    <!-- tgw框架基础依赖开始 -->
     <dependency>
-      <groupId>portlet-api</groupId>
-      <artifactId>portlet-api</artifactId>
-      <version>1.0</version>
-      <scope>provided</scope>
+      <groupId>com.tgw.basic</groupId>
+      <artifactId>basic-core-model</artifactId>
+      <version>${basic-version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.tgw.basic</groupId>
+      <artifactId>basic-common</artifactId>
+      <version>${basic-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.tgw.basic</groupId>
+      <artifactId>basic-system-runtime-envir</artifactId>
+      <version>${basic-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.tgw.basic</groupId>
+      <artifactId>basic-framework-model</artifactId>
+      <version>${basic-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.tgw.basic</groupId>
+      <artifactId>basic-framework-service</artifactId>
+      <version>${basic-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.tgw.basic</groupId>
+      <artifactId>basic-framework-web</artifactId>
+      <version>${basic-version}</version>
+    </dependency>
+    <!-- tgw框架基础依赖结束 -->
 
-    <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+    <!-- tgw框架依赖开始 -->
     <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <version>3.1.0</version>
-      <scope>provided</scope>
+      <groupId>com.tgw.basic</groupId>
+      <artifactId>basic-system-constant-web</artifactId>
+      <version>${basic-version}</version>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/javax.servlet.jsp/javax.servlet.jsp-api-->
     <dependency>
-      <groupId>javax.servlet.jsp</groupId>
-      <artifactId>javax.servlet.jsp-api</artifactId>
-      <version>2.3.1</version>
-      <scope>provided</scope>
+      <groupId>com.tgw.basic</groupId>
+      <artifactId>basic-system-config-web</artifactId>
+      <version>${basic-version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.tgw.basic</groupId>
+      <artifactId>basic-system-menu-web</artifactId>
+      <version>${basic-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.tgw.basic</groupId>
+      <artifactId>basic-system-function-web</artifactId>
+      <version>${basic-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.tgw.basic</groupId>
+      <artifactId>basic-system-role-web</artifactId>
+      <version>${basic-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.tgw.basic</groupId>
+      <artifactId>basic-system-user-web</artifactId>
+      <version>${basic-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.tgw.basic</groupId>
+      <artifactId>basic-mobile-web</artifactId>
+      <version>${basic-version}</version>
+    </dependency>
+    <!-- tgw框架依赖结束 -->
 
+    <!-- tgw框架示例组件开始 -->
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
+      <groupId>com.tgw.basic</groupId>
+      <artifactId>basic-example-web</artifactId>
+      <version>${basic-version}</version>
     </dependency>
+    <!-- tgw框架示例组件结束 -->
   </dependencies>
-
-  <profiles>
-    <profile>
-      <id>jetspeed</id>
-      <build>
-        <plugins>
-          <!--<plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-war-plugin</artifactId>
-              <version>2.0-beta-2</version>
-              <configuration>
-                  <webXml>src/main/jetspeed/web.xml</webXml>
-              </configuration>
-          </plugin>-->
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
-
-  <!-- 项目构建配置 -->
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.zeroturnaround</groupId>
-        <artifactId>jrebel-maven-plugin</artifactId>
-        <version>1.1.5</version>
-        <executions>
-          <execution>
-            <id>generate-rebel-xml</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <!-- 编译插件
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.1</version>
-        <configuration>
-          <source>1.7</source>
-          <target>1.7</target>
-          <encoding>UTF-8</encoding>
-        </configuration>
-      </plugin>-->
-      <!-- 打包
-      <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <configuration>
-          <descriptorRefs>
-            <descriptorRef>jar-with-dependencies</descriptorRef>
-          </descriptorRefs>
-          <archive>
-            <manifest>
-              <mainClass></mainClass>
-            </manifest>
-          </archive>
-        </configuration>
-        <executions>
-          <execution>
-            <id>make-assembly</id>
-            <phase>package</phase>
-            <goals>
-              <goal>single</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin> -->
-    </plugins>
-
-    <resources>
-      <resource>
-        <directory>src/main/java</directory>
-        <includes>
-          <include>**/*.xml</include>
-        </includes>
-      </resource>
-      <resource>
-        <directory>src/main/resources</directory>
-        <includes>
-          <include>**/*.properties</include>
-          <include>**/*.xml</include>
-          <include>**/*.css</include>
-          <include>**/*.js</include>
-          <include>**/*.jsp</include>
-        </includes>
-      </resource>
-    </resources>
-  </build>
 </project>
