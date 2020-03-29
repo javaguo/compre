@@ -1,4 +1,4 @@
-<%@ page language="java" pageEncoding="utf-8"%>
+echartBar.jspechartBar.jsp<%@ page language="java" pageEncoding="utf-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 

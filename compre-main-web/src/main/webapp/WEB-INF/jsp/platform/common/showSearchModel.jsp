@@ -590,7 +590,7 @@ function searSubmit${identifier}() {
            viewConfig:{
                forceFit:true
            },
-           html:'<div id="${fwSearchModelFreeAreaElementId}" style="width: 100%;height:100%;overflow:scroll;" ></div>'
+           html:'<div id="${fwSearchModelFreeAreaElementId}" style="width: 100%;height:100%;" ></div>'
        });
 
 Ext.onReady(function() {
@@ -627,7 +627,7 @@ Ext.onReady(function() {
 	}
 
 	<%-- 组装渲染展示列表页面结束 --%>
-});
+});	
 </script>
 
   </head>

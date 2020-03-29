@@ -58,7 +58,7 @@ public class StatisticsExpendEChartController extends BaseController<Expend> {
 
     @Override
     public void initSearchModel(HttpServletRequest request, HttpServletResponse response, ModelAndView modelAndView, SysEnController controller, Expend bean) throws PlatformException {
-        controller.addJsFileNameUserDefinePath( "page/manage/compreAccount/statistics/js/statisticsExpendEchart.js" );
+        controller.addJsFileNameUserDefinePath( super.PATH_RESOURCE_BUSINESS+"compreAccount/statistics/js/statisticsExpendEchart.js" );
 
         modelAndView.addObject(FrameworkConstant.FW_SEARCH_MODEL_SEARCH_CALLBACK_FUNCTION_NAME,"statisticsExpendEChartCallback");
         modelAndView.addObject(FrameworkConstant.FW_SEARCH_MODEL_FREE_AREA_ELEMENT_ID,"statisticsExpendEChartShowResEle");

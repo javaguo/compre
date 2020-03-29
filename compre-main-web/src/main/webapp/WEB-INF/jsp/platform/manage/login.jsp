@@ -15,33 +15,18 @@
 		<meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1" />
 		<title>通用后台管理系统</title>
 
-		<link rel="stylesheet" type="text/css" href="resource/css/platform/manage/login/login.css">
+		<link rel="stylesheet" type="text/css" href="resource/platform/css/platform/manage/login/login.css">
 
 
-		<script type="text/javascript" src="<%=basePath%>resource/plugin/jquery/jquery/jquery-1.12.4.min.js"></script>
-		<script type="text/javascript" src="<%=basePath%>resource/plugin/jquery/md5/jquery.md5.js"></script>
-		<script type="text/javascript" src="<%=basePath%>resource/js/platform/manage/login/manageLogin.js"></script>
+		<script type="text/javascript" src="<%=basePath%>resource/platform/plugin/jquery/jquery/jquery-1.12.4.min.js"></script>
+		<script type="text/javascript" src="<%=basePath%>resource/platform/plugin/jquery/md5/jquery.md5.js"></script>
+		<script type="text/javascript" src="<%=basePath%>resource/platform/js/platform/manage/login/manageLogin.js"></script>
 
 		<script type="text/javascript">
 			setContextPath('<%=basePath%>');
 		</script>
 		<style>
-			.downloadAppCon{
-				position: absolute;
-				top:150px;
-				left: 800px;
-				width: 180px;
-				height: 180px;
-				margin: 20px 20px 20px 20px;
-			}
-			.downloadAppImg{
-				width: 100%;
-				height: 100%;
-			}
-			.downloadAppTip{
-				font-size: 14px;
-				text-align: center;
-			}
+
 		</style>
 	</head>
 	<body>
@@ -55,23 +40,18 @@
 					</div>
 					<div class="save">
 						<a href="javascript:login();"> 
-							<img src="resource/img/platform/manage/login/btnlogin.png"/>
+							<img src="resource/platform/img/platform/manage/login/btnlogin.png"/>
 						</a>
 					</div>
 					<div class="reset">
 						<a href="#">
-							<img src="resource/img/platform/manage/login/reset.png"/>
+							<img src="resource/platform/img/platform/manage/login/reset.png"/>
 						</a>
 					</div>
 				</form>
 			</div>
-			<div class="downloadAppCon">
-				<img class="downloadAppImg" src="resource/img/platform/manage/login/downloadApp.png"/>
-				<div class="downloadAppTip">
-					下载注册APP（安卓）
-				</div>
-			</div>
 		</div>
+
 		<div style="width: 420px;height:80px;float:right;">
 			<iframe width="420" scrolling="no" height="60" frameborder="0" allowtransparency="true" src="http://i.tianqi.com/index.php?c=code&id=12&color=%23&icon=1&num=5&site=14"></iframe>
 			<%--<iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=2" width="770" height="70" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>--%>
